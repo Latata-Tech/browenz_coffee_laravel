@@ -1,0 +1,50 @@
+version: '3.7'
+
+services:
+  app:
+    image: browenz_coffee:latest
+    container_name: browenz_coffee
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www
+    networks:
+      - browenz_coffee
+
+  db:
+      image: postgres:latest
+      container_name: browenze_postgres
+      restart: unless-stopped
+      environment:
+        POSTGRES_PASSWORD: admin
+        POSTGRES_DB: browenz_coffee
+      networks:
+        - browenz_coffee
+
+  redis:
+    image: redis:alpine
+    container_name: browenz_coffee_redis
+    restart: unless-stopped
+    ports:
+      - 6380:6379
+    volumes:
+      - ./redis:/etc/redis/redis.conf
+    networks:
+      - browenz_coffee
+
+  nginx:
+      image: nginx:alpine
+      container_name: browenz_coffee_nginx
+      ports:
+        - 8000:80
+      volumes:
+        - ./:/var/www
+        - ./nginx:/etc/nginx/conf.d
+      networks:
+        - browenz_coffee
+
+volumes:
+  my_db_volume:
+
+networks:
+  browenz_coffee:
+    driver: bridge
