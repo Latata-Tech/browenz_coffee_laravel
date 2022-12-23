@@ -2,6 +2,8 @@
 
 @section('header')
     @include('templates.header')
+    @include('templates.nav')
+    @include('templates.body')
 @endsection
 
 @section('content')
