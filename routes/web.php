@@ -23,6 +23,7 @@ Route::prefix('employees')->group(function () {
    Route::get('/', [EmployeeController::class, 'index'])->name('employees');
    Route::get('/create', [EmployeeController::class, 'create'])->name('createEmployee');
    Route::get('/update/{employee}', [EmployeeController::class, 'edit'])->name('editEmployee');
+   Route::get('/detail/{employee}', [EmployeeController::class, 'detail'])->name('detailEmployee');
    Route::post('/', [EmployeeController::class, 'store'])->name('storeEmployee');
    Route::put('/update/{employee}', [EmployeeController::class, 'update'])->name('updateEmployee');
    Route::delete('/delete/{employee}', [EmployeeController::class, 'delete'])->name('deleteEmployee');

@@ -21,8 +21,8 @@ class Employee extends Model
     {
         $query->when($filter['search'] ?? false, function ($query, $search) {
             return $query->whereHas('user', function ($query) use ($search) {
-                    $query->where('email', 'like', '%' . $search . '%')
-                        ->orWhere('name', 'like', '%' . $search . '%');
+                    $query->whereRaw('lower(email) like ?', ['%' . trim(strtolower( $search)). '%'])
+                        ->orWhereRaw('lower(name) like ?', ['%' . trim(strtolower( $search)). '%']);
                 });
         });
     }

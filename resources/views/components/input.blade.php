@@ -5,6 +5,6 @@
             name="{{$name}}"
             id="{{$name}}"
             class="form-control"
-            value="{{old($name)}}"
+            value="{{$value ?? old($name)}}"
     >
 </div>

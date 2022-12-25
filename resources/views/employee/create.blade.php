@@ -10,6 +10,7 @@
     <div class="container-fluid border-bottom my-3">
         <h4>Karyawan</h4>
     </div>
+    <a href="{{route('employees')}}" class="btn btn-secondary btn-sm">Kembali</a>
     @include('components.error')
     <form action="{{route('storeEmployee')}}" method="POST">
         @csrf

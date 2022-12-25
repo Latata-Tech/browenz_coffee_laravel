@@ -12,7 +12,15 @@
     </div>
     @include('components.success')
     <a href="{{route('createEmployee')}}" class="btn btn-primary my-3">Tambah Karyawan</a>
-    <h6>Daftar Karyawan</h6>
+    <div class="row">
+        <div class="col-6">
+            <h4>Daftar Karyawan</h4>
+        </div>
+        <div class="col-3"></div>
+        <div class="col-3">
+            @include('components.search', ['action' => route('employees')])
+        </div>
+    </div>
     <div class="card w-100">
         <div class="card-body">
             <table class="table">
@@ -31,8 +39,8 @@
                         <td>{{$employee->user->email}}</td>
                         <td>{{$employee->user->name}}</td>
                         <td>
-                            <a href="" class="btn btn-sm btn-link"><i class="material-icons text-primary">preview</i></a>
-                            <a href="" class="btn btn-sm btn-link"><i class="material-icons text-warning">edit_square</i></a>
+                            <a href="{{route('detailEmployee', ['employee' => $employee->id])}}" class="btn btn-sm btn-link"><i class="material-icons text-primary">preview</i></a>
+                            <a href="{{route('editEmployee', ['employee' => $employee->id])}}" class="btn btn-sm btn-link"><i class="material-icons text-warning">edit_square</i></a>
                             <a href="#" data-bs-title="Default tooltip"
                                 type="button" data="{{route('deleteEmployee', ['employee' => $employee->id])}}" onclick="deleteModal(this, 'modal-karyawan')"  class="btn btn-sm btn-link" data-bs-toggle="modal" data-bs-target="#karyawanModal">
                                 <i class="material-icons text-danger">delete</i>
@@ -43,9 +51,11 @@
                 </tbody>
             </table>
         </div>
-        <div class="card-footer">
-            {{$employees->links('vendor.pagination.bootstrap-5')}}
-        </div>
+        @if($employees->count() > 10)
+            <div class="card-footer">
+                {{$employees->links('vendor.pagination.bootstrap-5')}}
+            </div>
+        @endif
     </div>
     @include('components.modal-delete', ['action' => 'karyawan'])
 @endsection

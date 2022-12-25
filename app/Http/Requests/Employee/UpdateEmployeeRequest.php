@@ -25,8 +25,10 @@ class UpdateEmployeeRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:150',
+            'email' => 'required|email:rfc',
             'phone_number' => 'required|string|min:11|max:13',
-            'address' => 'required|string|max:255'
+            'address' => 'required|string|max:255',
+            'birth' => 'required|date_format:Y-m-d'
         ];
     }
 }

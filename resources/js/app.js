@@ -1,5 +1,6 @@
 import './bootstrap';
 import '../css/app.css'
+import $ from 'jquery';
 
 window.deleteModal = function (elm, id) {
     let formElement = document.getElementById(id);
@@ -10,3 +11,15 @@ window.cancelDeleteModal = function (elm, id) {
     let formElement = document.getElementById(id);
     formElement.action = '';
 }
+
+window.eventClearSearch = function (elm) {
+    elm.addEventListener('search', (evt) => {
+        console.log(elm.values)
+    })
+}
+
+window.$ = $;
+
+$('#searchData').on('search', function (evt) {
+    $('#formSearch').submit();
+})
