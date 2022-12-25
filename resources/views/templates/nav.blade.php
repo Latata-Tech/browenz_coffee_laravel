@@ -68,9 +68,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span data-feather="layers" class="align-text-bottom"></span>
-                        Integrations
+                    <a class="nav-link" href="{{route('employees')}}">
+                        Karyawan
                     </a>
                 </li>
             </ul>
