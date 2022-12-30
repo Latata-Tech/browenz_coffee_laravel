@@ -2,9 +2,16 @@ version: '3.7'
 
 services:
   app:
-    image: browenz_coffee:latest
+    build:
+        args:
+            user: han
+            uid: 1000
+        context: ./
+        dockerfile: Dockerfile
+    image: browenz_coffee
     container_name: browenz_coffee
     restart: unless-stopped
+    working_dir: /var/www/
     volumes:
       - ./:/var/www
     networks:
