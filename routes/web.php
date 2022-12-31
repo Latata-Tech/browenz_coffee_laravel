@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\IngredientController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,5 +28,14 @@ Route::prefix('employees')->group(function () {
    Route::post('/', [EmployeeController::class, 'store'])->name('storeEmployee');
    Route::put('/update/{employee}', [EmployeeController::class, 'update'])->name('updateEmployee');
    Route::delete('/delete/{employee}', [EmployeeController::class, 'delete'])->name('deleteEmployee');
+});
+Route::prefix('ingredients')->group(function () {
+    Route::get('/', [IngredientController::class, 'index'])->name('ingredients');
+    Route::get('/create', [IngredientController::class, 'create'])->name('createIngredient');
+    Route::get('/update/{ingredient}', [IngredientController::class, 'edit'])->name('editIngredient');
+    Route::get('/detail/{ingredient}', [IngredientController::class, 'detail'])->name('detailIngredient');
+    Route::post('/', [IngredientController::class, 'store'])->name('storeIngredient');
+    Route::put('/update/{ingredient}', [IngredientController::class, 'update'])->name('updateIngredient');
+    Route::delete('/delete/{ingredient}', [IngredientController::class, 'delete'])->name('deleteIngredient');
 });
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
