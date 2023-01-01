@@ -11,7 +11,7 @@ class IngredientController extends Controller
 {
     public function index()
     {
-        $ingredients = Ingredient::with('type')->filter(request(['search']))->paginate(10);
+        $ingredients = Ingredient::with('type')->filter(request(['search']))->orderBy('name', 'asc')->paginate(10);
         return view('ingredients.index', [
             'ingredients' => $ingredients,
         ]);
@@ -30,10 +30,24 @@ class IngredientController extends Controller
         return redirect()->back()->with('success', 'Berhasil tambah data bahan baku baru');
     }
 
+    public function detail(Ingredient $ingredient) {
+        $data = [
+            'name' => $ingredient->name,
+            'stock' => $ingredient->stock,
+            'min_stock' => $ingredient->min_stock,
+            'stock_type' => $ingredient->type->name,
+            'description' => $ingredient->description,
+        ];
+        return view('ingredients.detail', [
+            'ingredient' => $data
+        ]);
+    }
+
     public function edit(Ingredient $ingredient)
     {
         return view('ingredients.edit', [
-            'ingredient' => $ingredient
+            'ingredient' => $ingredient,
+            'stock_types' => StockType::select(['id', 'name'])->get(),
         ]);
     }
 
@@ -41,7 +55,7 @@ class IngredientController extends Controller
     {
         $isNameExist = Ingredient::where('name', $request->name)->first();
         if(!is_null($isNameExist) && $ingredient->id !== $isNameExist->id) {
-            return redirect()->back()->with('errors', 'Name already recorded on database');
+            return redirect()->back()->with('errorUnique', 'Nama sudah ada');
         }
         $ingredient->update($request->validated());
         return redirect()->back()->with('success', 'Berhasil update data bahan baku ' . $ingredient->name);

@@ -19,7 +19,7 @@
                 @include('components.input', ['type' => 'text', 'name' => 'name', 'label' => 'Nama'])
                 @include('components.input', ['type' => 'number', 'name' => 'stock', 'label' => 'Stok'])
                 @include('components.input', ['type' => 'number', 'name' => 'min_stock', 'label' => 'Stok Minimal'])
-                @include('components.select', ['datas' => $stock_types, 'name' => 'stock_type_id', 'label' => 'Tipe Stok'])
+                @include('components.select', ['datas' => $stock_types, 'name' => 'stock_type_id', 'label' => 'Tipe Stok', 'selected' => null])
                 @include('components.input', ['type' => 'text', 'name' => 'description', 'label' => 'Deksripsi'])
             </div>
         </div>

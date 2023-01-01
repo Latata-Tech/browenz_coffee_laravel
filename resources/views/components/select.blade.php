@@ -2,7 +2,11 @@
     <label for="">{{$label}}</label>
     <select name="{{$name}}" id="{{$name}}" class="form-control">
         @foreach($datas as $data)
-           <option value="{{$data->id}}">{{$data->name}}</option>
+            @if(is_null($selected))
+               <option value="{{$data->id}}">{{$data->name}}</option>
+            @else
+                <option value="{{$data->id}}" {{$selected === $data->id ? "selected" : ""}}>{{$data->name}}</option>
+            @endif
         @endforeach
     </select>
 </div>
