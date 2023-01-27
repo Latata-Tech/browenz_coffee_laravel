@@ -22,7 +22,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id'
+        'address',
+        'phone_number',
+        'birth_date',
+        'role_id',
+        'status'
     ];
 
     /**
@@ -44,7 +48,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function employees() {
-        return $this->hasOne(Employee::class, 'user_id', 'id');
+    public function scopeFilter($query, $filter)
+    {
+        $query->when($filter['search'] ?? false, function ($query, $search) {
+            return $query->whereRaw('lower(email) like ?', ['%' . trim(strtolower( $search)). '%'])
+                    ->orWhereRaw('lower(name) like ?', ['%' . trim(strtolower( $search)). '%']);
+        });
     }
 }

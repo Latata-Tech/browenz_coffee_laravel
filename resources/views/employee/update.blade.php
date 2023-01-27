@@ -16,14 +16,11 @@
         @csrf
         @method('PUT')
         <div class="row row-col-2">
-            <div class="col">
-                @include('components.input', ['type' => 'text', 'name' => 'name', 'label' => 'Nama', 'value' => $employee->user->name])
-                @include('components.input', ['type' => 'email', 'name' => 'email', 'label' => 'Email', 'value' => $employee->user->email])
-                @include('components.input', ['type' => 'text', 'name' => 'phone_number', 'label' => 'No Telepon', 'value' => $employee->phone_number])
-            </div>
-            <div class="col">
-                @include('components.input', ['type' => 'date', 'name' => 'birth', 'label' => 'Tanggal Lahir', 'value' => $employee->birth_date])
-                @include('components.input', ['type' => 'text', 'name' => 'address', 'label' => 'Alamat', 'value' => $employee->address])
+            <div class="col-3">
+                @include('components.input', ['type' => 'text', 'name' => 'name', 'label' => 'Nama', 'placeholder' => 'Masukan nama', 'value' => $employee->name])
+                @include('components.input', ['type' => 'text', 'name' => 'address', 'label' => 'Alamat', 'placeholder' => 'Masukan alamat', 'value' => $employee->address])
+                @include('components.input', ['type' => 'text', 'name' => 'phone_number', 'label' => 'Nomor Handphone', 'placeholder' => 'Masukan nomor handphone', 'value' => $employee->phone_number])
+                @include('components.input', ['type' => 'date', 'name' => 'birth_date', 'label' => 'Tanggal Lahir', 'value' => $employee->birth_date])
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Ubah</button>

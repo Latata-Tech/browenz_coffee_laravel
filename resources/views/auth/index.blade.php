@@ -8,6 +8,7 @@
     <div class="d-flex justify-content-center align-items-center w-100 vh-100">
         <form method="POST" action="{{route('login')}}" style="width: 580px;">
             @csrf
+            @include('components.error')
             <div class="mb-3">
                 <label for="" class="form-label">Email</label>
                 <input type="email" name="email" class="form-control" placeholder="browenz@gmail.com">

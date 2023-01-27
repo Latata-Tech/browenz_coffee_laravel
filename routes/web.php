@@ -16,13 +16,18 @@ use App\Http\Controllers\IngredientController;
 |
 */
 
-Route::get('/', [AuthController::class, 'index']);
+Route::get('/', [AuthController::class, 'index'])->name('index');
 Route::prefix('auth')->group(function(){
     Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 Route::prefix('employees')->group(function () {
    Route::get('/', [EmployeeController::class, 'index'])->name('employees');
    Route::get('/create', [EmployeeController::class, 'create'])->name('createEmployee');
+   Route::get('/create-account/{employee}', [EmployeeController::class, 'createAccount'])->name('createAccount');
+   Route::get('/update-account/{employee}', [EmployeeController::class, 'updateAccount'])->name('updateAccount');
+   Route::post('/create-account/{employee}', [EmployeeController::class, 'storeAccount'])->name('storeAccount');
+   Route::put('/update-account/{employee}', [EmployeeController::class, 'storeUpdateAccount'])->name('storeUpdateAccount');
    Route::get('/update/{employee}', [EmployeeController::class, 'edit'])->name('editEmployee');
    Route::get('/detail/{employee}', [EmployeeController::class, 'detail'])->name('detailEmployee');
    Route::post('/', [EmployeeController::class, 'store'])->name('storeEmployee');

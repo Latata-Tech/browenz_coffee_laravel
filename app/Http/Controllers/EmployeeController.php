@@ -17,7 +17,7 @@ class EmployeeController extends Controller
         $request->validate([
             'search' => 'nullable|string'
         ]);
-        $employees = Employee::with('user')->filter(request(['search']))->paginate(10);
+        $employees = User::filter(request(['search']))->paginate(10);
         return view('employee.index', [
             'employees' => $employees
         ]);
@@ -27,10 +27,57 @@ class EmployeeController extends Controller
         return view('employee.create');
     }
 
-    public function detail(Employee $employee) {
+    public function createAccount(User $employee) {
+        $roles = Role::select(['id', 'name']);
+        if (auth()->user()->role_id === 1) {
+            $roles = $roles->where('name', 'staff');
+        }
+        return view('employee.create_account', [
+            'roles' => $roles->get(),
+            'employee' => $employee
+        ]);
+    }
+
+    public function updateAccount(User $employee) {
+        return view('employee.update_account', [
+            'roles' => Role::select(['id','name'])->get(),
+            'employee' => $employee
+        ]);
+    }
+
+    public function storeAccount(Request $request, User $employee) {
+        $request->validate([
+            'email' => 'required|email:rfc|unique:users,email',
+            'password' => 'required|string|min:6|max:24',
+            'role_id' => 'required|exists:roles,id',
+            'status' => 'nullable',
+        ]);
+        $password = Hash::make($request->password);
+        $employee->update([
+            'email' => $request->email,
+            'password' => $password,
+            'role_id' => $request->role_id,
+            'status' => $request->status === "on"
+        ]);
+        return redirect()->route('employees')->with('success', 'Berhasil buat akun karyawan ' . $employee->name);
+    }
+
+    public function storeUpdateAccount(Request $request, User $employee) {
+        $request->validate([
+            'role_id' => 'required|exists:roles,id',
+            'status' => 'nullable'
+        ]);
+
+        $employee->update([
+            'role_id' => $request->role_id,
+            'status' => $request->status === "on"
+        ]);
+        return redirect()->route('employees')->with('success', 'Berhasil update akun karyawan ' . $employee->name);
+    }
+
+    public function detail(User $employee) {
         $employeeData = [
-            'name' => $employee->user->name,
-            'email' => $employee->user->email,
+            'name' => $employee->name,
             'birth_date' => Carbon::createFromDate($employee->birth_date)->format('d/m/Y'),
             'phone_number' => $employee->phone_number,
             'address' => $employee->address,
@@ -40,48 +87,40 @@ class EmployeeController extends Controller
         ]);
     }
 
-    public function edit(Employee $employee) {
+    public function edit(User $employee) {
         return view('employee.update', [
             'employee' => $employee
         ]);
     }
 
     public function store(CreateEmployeeRequest $request) {
-        $user = User::create([
+        User::create([
             'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role_id' => Role::where('name', 'staff')->first()->id
-        ]);
-        Employee::create([
             'phone_number' => $request->phone_number,
             'address' => $request->address,
-            'birth_date' => $request->birth,
-            'user_id' => $user->id
+            'birth_date' => $request->birth_date,
         ]);
         return redirect()->route('employees')->with('success', 'Berhasil tambah karyawan');
     }
 
-    public function update(UpdateEmployeeRequest $request, Employee $employee) {
-        $is_exist = User::where('email', $request->email)->first();
-        if($is_exist->id !== $employee->user_id) {
-            return redirect()->route('employees')->withErrors([
-                'email' => 'Email yang dimasukan sudah terdapaftar'
-            ]);
+    public function update(UpdateEmployeeRequest $request, User $employee) {
+        if($request->role_id === 1 && auth()->user()->role_id === 1 && !is_null($employee->email)) {
+            return redirect()->back()->with('errors', 'Admin tidak dapat update user admin');
         }
-        $employee->user()->update([
-            'name' => $request->name,
-            'email' => $request->email,
-        ]);
         $employee->update([
+            'name' => $request->name,
             'phone_number' => $request->phone_number,
-            'address' => $request->address
+            'address' => $request->address,
+            'birth_date' => $request->birth_date,
         ]);
         return redirect()->route('employees')->with('success', 'Berhasil update karyawan');
     }
 
-    public function delete(Employee $employee) {
-        $data = $employee->user;
+    public function delete(User $employee) {
+        if($employee->role_id === 1 && auth()->user()->role_id === 1 && !is_null($employee->email)) {
+            return redirect()->back()->with('failed', 'Admin tidak dapat menghapus user admin');
+        }
+        $data = $employee;
         $employee->delete();
         return redirect()->back()->with('success', 'Berhasil hapus karyawan ' . $data->name);
     }

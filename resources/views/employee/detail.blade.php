@@ -10,31 +10,13 @@
     <div class="container-fluid border-bottom my-3">
         <h4>Detail Karyawan</h4>
     </div>
-    <div class="row">
-        <div class="col-md-6">
-            <table class="table table-bordered">
-                <tr>
-                    <th>Nama Lengkap</th>
-                    <td>{{$employee['name']}}</td>
-                </tr>
-                <tr>
-                    <th>Email</th>
-                    <td>{{$employee['email']}}</td>
-                </tr>
-                <tr>
-                    <th>Tanggal Lahir</th>
-                    <td>{{$employee['birth_date']}}</td>
-                </tr>
-                <tr>
-                    <th>No Telepon</th>
-                    <td>{{$employee['phone_number']}}</td>
-                </tr>
-                <tr>
-                    <th>Alamat</th>
-                    <td>{{$employee['address']}}</td>
-                </tr>
-            </table>
-            <a href="{{route('employees')}}" class="btn btn-secondary btn-sm">Kembali</a>
+    <a href="{{route('employees')}}" class="btn btn-secondary btn-sm">Kembali</a>
+    <div class="row row-col-2">
+        <div class="col-3">
+            @include('components.input', ['type' => 'text', 'name' => 'name', 'label' => 'Nama', 'placeholder' => 'Masukan nama', 'value' => $employee['name']])
+            @include('components.input', ['type' => 'text', 'name' => 'address', 'label' => 'Alamat', 'placeholder' => 'Masukan alamat', 'value' => $employee['address']])
+            @include('components.input', ['type' => 'text', 'name' => 'phone_number', 'label' => 'Nomor Handphone', 'placeholder' => 'Masukan nomor handphone', 'value' => $employee['phone_number']])
+            @include('components.input', ['type' => 'text', 'name' => 'birth_date', 'label' => 'Tanggal Lahir', 'value' => $employee['birth_date']])
         </div>
     </div>
 @endsection

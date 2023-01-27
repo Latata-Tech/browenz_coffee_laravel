@@ -25,11 +25,9 @@ class CreateEmployeeRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:150',
-            'email' => 'required|email:rfc|unique:users,email',
-            'password' => 'required|string|min:6|max:24',
             'phone_number' => 'required|string|min:11|max:13',
             'address' => 'required|string|max:255',
-            'birth' => 'required|date_format:Y-m-d'
+            'birth_date' => 'required|date_format:Y-m-d'
         ];
     }
 }

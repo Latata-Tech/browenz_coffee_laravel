@@ -12,14 +12,13 @@
     </div>
     <a href="{{route('employees')}}" class="btn btn-secondary btn-sm">Kembali</a>
     @include('components.error')
-    <form action="{{route('storeEmployee')}}" method="POST">
+    <form action="{{route('storeUpdateAccount', ['employee' => $employee->id])}}" method="POST">
         @csrf
+        @method('PUT')
         <div class="row">
             <div class="col-md-3">
-                @include('components.input', ['type' => 'text', 'name' => 'name', 'label' => 'Nama', 'placeholder' => 'Masukan nama'])
-                @include('components.input', ['type' => 'text', 'name' => 'address', 'label' => 'Alamat', 'placeholder' => 'Masukan alamat'])
-                @include('components.input', ['type' => 'text', 'name' => 'phone_number', 'label' => 'Nomor Handphone', 'placeholder' => 'Masukan nomor handphone'])
-                @include('components.input', ['type' => 'date', 'name' => 'birth_date', 'label' => 'Tanggal Lahir'])
+                @include('components.select', ['datas' => $roles, 'name' => 'role_id', 'label' => 'Pilih akses', 'selected' => $employee->role_id])
+                Akun Aktif <input type="checkbox" name="status" {{$employee->status ? "checked" : ""}} value="on">
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Simpan</button>
