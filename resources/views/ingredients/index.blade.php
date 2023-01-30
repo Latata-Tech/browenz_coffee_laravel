@@ -7,23 +7,28 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid border-bottom my-3">
-        <h4>Stok Bahan Baku</h4>
+    <div class="container-fluid border-bottom my-3 mb-5 p-0">
+        <h4>Bahan Baku</h4>
     </div>
     @include('components.success')
-    <a href="{{route('createIngredient')}}" class="btn btn-primary my-3">Tambah Bahan Baku</a>
-    <div class="row">
-        <div class="col-6">
-            <h4>Daftar Stok Bahan Baku</h4>
+    <div class="row mb-2">
+        <div class="col-6 justify-content-center">
+            <h4>Daftar Bahan Baku</h4>
         </div>
-        <div class="col-3"></div>
-        <div class="col-3">
-            @include('components.search', ['action' => route('employees')])
+        <div class="col-6 text-end">
+            <a href="{{route('createIngredient')}}" class="btn btn-primary">Tambah</a>
         </div>
     </div>
+    @include('components.success')
+    @include('components.error-custom', ['errorName' => 'failed'])
     <div class="card w-100">
         <div class="card-body">
-            <table class="table">
+            <div class="row">
+                <div class="col-4">
+                    @include('components.search', ['action' => route('employees')])
+                </div>
+            </div>
+            <table class="table table-striped">
                 <thead>
                 <tr>
                     <th>No</th>

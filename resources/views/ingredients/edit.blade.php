@@ -20,9 +20,8 @@
             <div class="col-md-3">
                 @include('components.input', ['type' => 'text', 'name' => 'name', 'label' => 'Nama', 'value' => $ingredient->name])
                 @include('components.input', ['type' => 'number', 'name' => 'stock', 'label' => 'Stok', 'value' => $ingredient->stock])
-                @include('components.input', ['type' => 'number', 'name' => 'min_stock', 'label' => 'Stok Minimal', 'value' => $ingredient->min_stock])
                 @include('components.select', ['datas' => $stock_types, 'name' => 'stock_type_id', 'label' => 'Tipe Stok', 'selected' => $ingredient->stock_type_id])
-                @include('components.input', ['type' => 'text', 'name' => 'description', 'label' => 'Deksripsi', 'value' => $ingredient->description])
+                @include('components.textarea', ['type' => 'text', 'name' => 'description', 'label' => 'Deksripsi', 'value' => $ingredient->description])
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Ubah</button>

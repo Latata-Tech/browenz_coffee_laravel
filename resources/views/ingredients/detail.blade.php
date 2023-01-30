@@ -12,29 +12,11 @@
     </div>
     <a href="{{route('ingredients')}}" class="btn btn-secondary btn-sm">Kembali</a>
     <div class="row">
-        <div class="col-md-6">
-            <table class="table table-bordered">
-                <tr>
-                    <th>Nama</th>
-                    <td>{{$ingredient['name']}}</td>
-                </tr>
-                <tr>
-                    <th>Stok</th>
-                    <td>{{$ingredient['stock']}}</td>
-                </tr>
-                <tr>
-                    <th>Stok Minimal</th>
-                    <td>{{$ingredient['min_stock']}}</td>
-                </tr>
-                <tr>
-                    <th>Tipe Stok</th>
-                    <td>{{$ingredient['stock_type']}}</td>
-                </tr>
-                <tr>
-                    <th>Deskripsi</th>
-                    <td>{{$ingredient['description']}}</td>
-                </tr>
-            </table>
+        <div class="col-md-4">
+            @include('components.input', ['type' => 'text', 'name' => 'name', 'label' => 'Nama', 'value' => $ingredient['name']])
+            @include('components.input', ['type' => 'number', 'name' => 'stock', 'label' => 'Stok', 'value' => $ingredient['stock']])
+            @include('components.input', ['type' => 'text', 'name' => 'stock_type_id', 'label' => 'Tipe Stok', 'value' => $ingredient['stock_type']])
+            @include('components.textarea', ['name' => 'description', 'label' => 'Deksripsi', 'value' => $ingredient['description']])
         </div>
     </div>
 @endsection

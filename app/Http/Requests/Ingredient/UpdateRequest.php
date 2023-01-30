@@ -26,7 +26,6 @@ class UpdateRequest extends FormRequest
         return [
             'name' => 'required|string|min:2|max:255',
             'stock' => 'required|integer|min:0',
-            'min_stock' => 'nullable|integer|min:0',
             'stock_type_id' => 'required|integer|exists:stock_types,id',
             'description' => 'nullable|string'
         ];

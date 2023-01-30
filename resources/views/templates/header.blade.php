@@ -10,6 +10,7 @@
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <title>Browenz Coffee</title>
 </head>
 <div class="container-fluid">

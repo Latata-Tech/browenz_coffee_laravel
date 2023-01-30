@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedInteger('stock');
-            $table->unsignedInteger('min_stock')->nullable();
             $table->unsignedBigInteger('stock_type_id');
             $table->foreign('stock_type_id')->references('id')->on('stock_types');
             $table->text('description')->nullable();

@@ -27,14 +27,13 @@ class IngredientController extends Controller
     public function store(CreateRequest $request)
     {
         Ingredient::create($request->validated());
-        return redirect()->back()->with('success', 'Berhasil tambah data bahan baku baru');
+        return redirect()->route('ingredients')->with('success', 'Berhasil tambah data bahan baku baru');
     }
 
     public function detail(Ingredient $ingredient) {
         $data = [
             'name' => $ingredient->name,
             'stock' => $ingredient->stock,
-            'min_stock' => $ingredient->min_stock,
             'stock_type' => $ingredient->type->name,
             'description' => $ingredient->description,
         ];
@@ -58,7 +57,7 @@ class IngredientController extends Controller
             return redirect()->back()->with('errorUnique', 'Nama sudah ada');
         }
         $ingredient->update($request->validated());
-        return redirect()->back()->with('success', 'Berhasil update data bahan baku ' . $ingredient->name);
+        return redirect()->route('ingredients')->with('success', 'Berhasil update data bahan baku ' . $ingredient->name);
     }
 
     public function delete(Ingredient $ingredient)

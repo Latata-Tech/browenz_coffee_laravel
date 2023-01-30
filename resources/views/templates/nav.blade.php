@@ -46,7 +46,7 @@
                 <li class="nav-item">
                     <a class="nav-link text-white" href="{{route('ingredients')}}">
                         <span data-feather="users" class="align-text-bottom"></span>
-                        Stok
+                        Bahan Baku
                     </a>
                 </li>
                 <li class="nav-item">
