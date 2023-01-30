@@ -25,7 +25,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-4">
-                    @include('components.search', ['action' => route('employees')])
+                    @include('components.search', ['action' => route('ingredients')])
                 </div>
             </div>
             <table class="table table-striped">
