@@ -13,7 +13,7 @@ class Category extends Model
     protected $guarded = ['id'];
 
     public function scopeFilter($query, $filter) {
-        $query->when($filter['name'] ?? false, fn($query, $filter) =>
+        $query->when($filter['search'] ?? false, fn($query, $filter) =>
             $query->where('name', 'like', '%'.$filter.'%')
         );
     }

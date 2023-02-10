@@ -9,7 +9,7 @@ class CategoryController extends Controller
 {
     public function findAll() {
         return view('category.index',[
-            'categories' => Category::filter(request(['name']))->select(['id', 'name'])->paginate(15)
+            'categories' => Category::filter(request(['search']))->select(['id', 'name'])->paginate(15)
         ]);
     }
 
