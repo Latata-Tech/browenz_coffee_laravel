@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\IngredientController;
+use App\Http\Controllers\CategoryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -42,5 +43,14 @@ Route::prefix('ingredients')->group(function () {
     Route::post('/', [IngredientController::class, 'store'])->name('storeIngredient');
     Route::put('/update/{ingredient}', [IngredientController::class, 'update'])->name('updateIngredient');
     Route::delete('/delete/{ingredient}', [IngredientController::class, 'delete'])->name('deleteIngredient');
+});
+Route::prefix('categories')->group(function () {
+    Route::get('/', [CategoryController::class, 'findAll'])->name('categories');
+    Route::get('/create', [CategoryController::class, 'create'])->name('createCategory');
+    Route::get('/update/{category}', [CategoryController::class, 'edit'])->name('editCategory');
+    Route::get('/detail/{id}', [CategoryController::class, 'findById'])->name('detailCategory');
+    Route::post('/', [CategoryController::class, 'save'])->name('storeCategory');
+    Route::put('/update/{category}', [CategoryController::class, 'update'])->name('updateCategory');
+    Route::delete('/delete/{category}', [CategoryController::class, 'delete'])->name('deleteCategory');
 });
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
