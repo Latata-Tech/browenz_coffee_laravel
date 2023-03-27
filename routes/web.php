@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MenuController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -43,6 +44,15 @@ Route::prefix('ingredients')->group(function () {
     Route::post('/', [IngredientController::class, 'store'])->name('storeIngredient');
     Route::put('/update/{ingredient}', [IngredientController::class, 'update'])->name('updateIngredient');
     Route::delete('/delete/{ingredient}', [IngredientController::class, 'delete'])->name('deleteIngredient');
+});
+Route::prefix('menus')->group(function () {
+    Route::get('/', [MenuController::class, 'index'])->name('menus');
+    Route::get('/create', [MenuController::class, 'create'])->name('createMenu');
+    Route::get('/update/{menu}', [MenuController::class, 'edit'])->name('editMenu');
+    Route::get('/detail/{menu}', [MenuController::class, 'detail'])->name('detailMenu');
+    Route::post('/create', [MenuController::class, 'store'])->name('storeMenu');
+    Route::put('/update/{menu}', [MenuController::class, 'update'])->name('updateMenu');
+    Route::delete('/delete/{menu}', [MenuController::class, 'delete'])->name('deleteMenu');
 });
 Route::prefix('categories')->group(function () {
     Route::get('/', [CategoryController::class, 'findAll'])->name('categories');

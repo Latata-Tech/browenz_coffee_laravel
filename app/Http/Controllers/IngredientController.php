@@ -6,6 +6,8 @@ use App\Http\Requests\Ingredient\CreateRequest;
 use App\Http\Requests\Ingredient\UpdateRequest;
 use App\Models\Ingredient;
 use App\Models\StockType;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\In;
 
 class IngredientController extends Controller
 {
@@ -65,5 +67,17 @@ class IngredientController extends Controller
         $data = $ingredient;
         $ingredient->delete();
         return redirect()->back()->with('success', 'Berhasil hapus data bahan baku ' . $data->name);
+    }
+
+    public function getIngredients(Request $request) {
+        $request->validate([
+            'exc' => 'nullable|string',
+        ]);
+
+        if (is_null($request->exc) || empty($request->exc)) {
+            return Ingredient::all(['id', 'name']);
+        }
+        $except = explode(',',$request->exc);
+        return Ingredient::select(['id', 'name'])->whereNotIn('id', $except)->get();
     }
 }
