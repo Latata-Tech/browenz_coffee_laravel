@@ -19,3 +19,13 @@ window.$ = $;
 $('#searchData').on('search', function (evt) {
     $('#formSearch').submit();
 })
+
+$('#photo').on('change', function (evt) {
+    const [file] = document.getElementById('photo').files
+    if(file) {
+        const prevImage = document.getElementById('previewImage');
+        prevImage.src = URL.createObjectURL(file);
+        prevImage.height = 160;
+        prevImage.width = 137;
+    }
+})

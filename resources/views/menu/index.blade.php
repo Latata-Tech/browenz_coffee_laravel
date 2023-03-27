@@ -57,9 +57,9 @@
                 </tbody>
             </table>
         </div>
-        @if($employees->count() > 10)
+        @if($menus->count() > 10)
             <div class="card-footer">
-                {{$employees->links('vendor.pagination.bootstrap-5')}}
+                {{$menus->links('vendor.pagination.bootstrap-5')}}
             </div>
         @endif
     </div>
