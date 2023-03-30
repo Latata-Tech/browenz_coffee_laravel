@@ -14,6 +14,19 @@ window.eventClearSearch = function (elm) {
     })
 }
 
+window.price = function (elm) {
+    let value = elm.value;
+    if(value.includes('.')) {
+        value = value.split('.').join('');
+    }
+    elm.value = new Intl.NumberFormat("id-ID").format(value)
+}
+
+window.undisabled = function (chk, targetId) {
+    if(chk.checked) document.getElementById(targetId).removeAttribute("disabled");
+    else document.getElementById(targetId).setAttribute("disabled", "disabled");
+}
+
 window.$ = $;
 
 $('#searchData').on('search', function (evt) {
@@ -28,4 +41,22 @@ $('#photo').on('change', function (evt) {
         prevImage.height = 160;
         prevImage.width = 137;
     }
+})
+
+function removeIngredient(elm) {
+    elm.parentNode.remove();
+}
+
+$('#addIngredient').on('click', function () {
+    const options = document.getElementById('ingredient_id[]').options;
+    const selectedOptions = [];
+    document.getElementsByName('ingredient_id[]').forEach((val, i) => {
+        selectedOptions.push(val.selectedOptions[0].value);
+    });
+    let selectElm = `<select class='form-control' name="ingredient_id[]">`;
+    for(let i = 0; i < options.length; i++) {
+        selectElm+=options[i].outerHTML;
+    }
+    selectElm += "</select>";
+    $('#ingredientsContainer').append(`<div class="mb-2 d-flex justify-content-center align-items-center">${selectElm}<span class="material-icons text-danger" onclick="removeIngredient(this)" style="cursor: pointer">close</span></div>`)
 })
