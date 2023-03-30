@@ -46,7 +46,7 @@
                                class="btn btn-sm btn-link"><i
                                     class="material-icons text-warning">edit_square</i></a>
                             <a href="#" data-bs-title="Default tooltip"
-                               type="button" data="{{route('deleteMenu', ['menu' => $employee->id])}}"
+                               type="button" data="{{route('deleteMenu', ['menu' => $menu->id])}}"
                                onclick="deleteModal(this, 'modal-menu')" class="btn btn-sm btn-link"
                                data-bs-toggle="modal" data-bs-target="#menuModal">
                                 <i class="material-icons text-danger">delete</i>

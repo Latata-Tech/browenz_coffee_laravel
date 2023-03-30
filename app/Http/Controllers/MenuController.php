@@ -29,17 +29,18 @@ class MenuController extends Controller
     public function store(CreateMenuRequest $request) {
         try {
             DB::beginTransaction();
-            Storage::disk('local')->put('menu/'.$request->file()->getClientOriginalName(), $request->file('photo')->getContent());
+            Storage::disk('local')->put('menu/'.$request->file('photo')->getClientOriginalName(), $request->file('photo')->getContent());
             $menu = Menu::create([
                 'name' => $request->name,
-                'photo' => 'menu/'.$request->file()->getClientOriginalName(),
+                'photo' => 'menu/'.$request->file('photo')->getClientOriginalName(),
                 'category_id' => $request->category_id,
-                'hot_price' => $request->hot_price,
-                'ice_price' => $request->ice_price,
+                'hot_price' => join("",explode(".",$request->hot_price ?? "0")),
+                'ice_price' => join("",explode(".",$request->ice_price ?? "0")),
                 'status' => $request->status,
             ]);
+
             $values = [];
-            foreach ($request->ingredients as $key => $val) {
+            foreach ($request->ingredient_id as $key => $val) {
                 $values[] = ['menu_id' => $menu->id, 'ingredient_id' => $val];
             }
             MenuIngredients::insert($values);
@@ -47,7 +48,7 @@ class MenuController extends Controller
             return redirect()->route('menus')->with('success', 'Berhasil tambah data menu');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('menus')->with('errors', 'Gagal tambah data menu');
+            return redirect()->back()->with('failed', 'Gagal tambah data menu');
         }
     }
 

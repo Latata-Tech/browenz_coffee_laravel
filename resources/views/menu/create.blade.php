@@ -16,8 +16,8 @@
     <div onclick="document.getElementById('photo').click()" class="bg-white text-center d-flex justify-content-center align-items-center rounded" style="width:157px;height:180px;">
         <img id="previewImage" src="{{asset('images/placeholder.png')}}" width="80" height="80" />
     </div>
-    <form action="{{route('storeMenu')}}" method="POST">
-        <input type="file" id="photo" class="d-none">
+    <form action="{{route('storeMenu')}}" method="POST" enctype="multipart/form-data">
+        <input type="file" id="photo" name="photo" class="d-none">
         @csrf
         <div class="row">
             <div class="col-md-3">

@@ -24,12 +24,12 @@ class CreateMenuRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|size:255',
-            'category_id' => 'required|integer|exists:category,id',
-            'hot_price' => 'required|integer|min:0',
-            'ice_price' => 'required|integer|min:0',
-            'ingredients' => 'required|array',
-            'photo' => 'required|image|size:1024',
+            'name' => 'required|string|max:255',
+            'category_id' => 'required|integer|exists:categories,id',
+            'hot_price' => 'nullable|string|min:0',
+            'ice_price' => 'nullable|string|min:0',
+            'ingredient_id' => 'required|array',
+            'photo' => 'required|image',
             'status' => 'required|boolean'
         ];
     }
