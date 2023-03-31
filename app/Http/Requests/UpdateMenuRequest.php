@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateMenuRequest extends FormRequest
+class UpdateMenuRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,8 +29,8 @@ class CreateMenuRequest extends FormRequest
             'hot_price' => 'nullable|string|min:0',
             'ice_price' => 'nullable|string|min:0',
             'ingredient_id' => 'required|array',
-            'ingredient_id.*' => 'exist:ingredients,id',
-            'photo' => 'required|image',
+            'ingredient_id.*' => 'exists:ingredients,id',
+            'photo' => 'nullable|image',
             'status' => 'required|boolean'
         ];
     }

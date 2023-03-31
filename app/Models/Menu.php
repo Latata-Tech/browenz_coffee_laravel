@@ -22,9 +22,15 @@ class Menu extends Model
     }
 
     public function scopeFilter($query, $filter) {
-        return $query->when($filter ?? false, function($query, $filter) {
+        return $query->when($filter['search'] ?? false, function($query, $filter) {
            return $query->where('name', 'like', '%' .$filter. '%')
                ->orWhereRelation('category', 'name', 'like', '%'.$filter.'%');
         });
+    }
+
+    public function delete()
+    {
+        $this->ingredients()->delete();
+        return parent::delete();
     }
 }
