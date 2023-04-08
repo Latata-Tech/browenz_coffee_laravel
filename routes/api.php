@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\MenuController;
+use App\Http\Controllers\Api\OrderController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,5 +25,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function () {
    Route::prefix('menus')->group(function () {
        Route::get('/', [MenuController::class, 'getMenu']);
+   });
+   Route::prefix('orders')->group(function () {
+      Route::post('/', [OrderController::class, 'createOrder']);
    });
 });
