@@ -22,10 +22,16 @@ class Menu extends Model
     }
 
     public function scopeFilter($query, $filter) {
-        return $query->when($filter['search'] ?? false, function($query, $filter) {
+        $query->when($filter['search'] ?? false, function($query, $filter) {
            return $query->where('name', 'like', '%' .$filter. '%')
                ->orWhereRelation('category', 'name', 'like', '%'.$filter.'%');
         });
+
+        $query->when($filter['category'] ?? false, function ($query, $filter) {
+            return $query->where('category_id', $filter);
+        });
+
+        return $query;
     }
 
     public function delete()

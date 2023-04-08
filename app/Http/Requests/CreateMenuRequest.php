@@ -29,7 +29,7 @@ class CreateMenuRequest extends FormRequest
             'hot_price' => 'nullable|string|min:0',
             'ice_price' => 'nullable|string|min:0',
             'ingredient_id' => 'required|array',
-            'ingredient_id.*' => 'exist:ingredients,id',
+            'ingredient_id.*' => 'exists:ingredients,id',
             'photo' => 'required|image',
             'status' => 'required|boolean'
         ];
