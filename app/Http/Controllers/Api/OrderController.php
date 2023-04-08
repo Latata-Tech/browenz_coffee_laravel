@@ -32,6 +32,8 @@ class OrderController extends Controller
                     'menu_id' => $orderMenu['id'],
                     'variant' => $orderMenu['variant'],
                     'qty' => $orderMenu['qty'],
+                    'created_at' => null,
+                    'updated_at' => null,
                 ];
                 if($orderMenu['variant'] === 'hot') {
                     $price = is_null($promo) ? $menu->hot_price : $promo->hot_price;
@@ -55,6 +57,8 @@ class OrderController extends Controller
             ]);
             for($i = 0; $i < count($orderDetails); $i++) {
                 $orderDetails[$i]['order_id'] = $order->id;
+                $orderDetails[$i]['created_at'] = Carbon::now()->format('Y-m-d H:i:s');
+                $orderDetails[$i]['updated_at'] = $orderDetails[$i]['created_at'];
             }
             OrderDetail::insert($orderDetails);
             DB::commit();
