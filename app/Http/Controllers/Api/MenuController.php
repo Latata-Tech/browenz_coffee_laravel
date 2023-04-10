@@ -12,7 +12,7 @@ class MenuController extends Controller
     function getMenu(Request $request) {
         $request->validate([
             'search' => 'nullable|string',
-            'category' => 'nullable|integer|exist:category,id'
+            'category' => 'nullable|integer|exists:categories,id'
         ]);
         $data = Menu::with('category')->filter(request(['search', 'category']))->orderBy('name')->paginate(15)->toArray();
         $menus = [];
