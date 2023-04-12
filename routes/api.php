@@ -28,7 +28,8 @@ Route::middleware('auth:sanctum')->group(function () {
        Route::get('/', [MenuController::class, 'getMenu']);
    });
    Route::prefix('orders')->group(function () {
-      Route::post('/', [OrderController::class, 'createOrder']);
+       Route::get('/', [OrderController::class, 'getOrder']);
+       Route::post('/', [OrderController::class, 'createOrder']);
    });
    Route::prefix('categories')->group(function () {
        Route::get('/', [CategoryController::class, 'findAll']);

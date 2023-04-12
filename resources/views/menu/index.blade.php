@@ -27,7 +27,7 @@
                     @include('components.search', ['action' => route('menus')])
                 </div>
             </div>
-1            <table class="table">
+            <table class="table">
                 <thead>
                 <tr>
                     <th>No</th>

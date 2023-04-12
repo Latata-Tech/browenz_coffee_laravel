@@ -16,6 +16,34 @@ use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
+    public function getOrder() {
+        $orders = [];
+        $datas = Order::with('detail', 'detail.menu')->where('status', 'process')
+            ->get()
+            ->toArray();
+        foreach ($datas as $data) {
+            $orderItems = [];
+            foreach ($data['detail'] as $detail) {
+                $item = [
+                    'total' => $detail['total'],
+                    'qty' => $detail['qty'],
+                    'name' => $detail['menu']['name'],
+                    'variant' => $detail['variant'],
+                ];
+                $orderItems[] = $item;
+            }
+            $orders[] = [
+                'code' => $data['code'],
+                'payment_type' => $data['payment_type'],
+                'detail' => $orderItems,
+                'total' => $data['total']
+            ];
+        }
+        return response()->json([
+            'status' => 'success',
+            'data' => $orders
+        ]);
+    }
     public function createOrder(OrderRequest $request) {
         try {
             DB::beginTransaction();
@@ -47,13 +75,14 @@ class OrderController extends Controller
                 $total += $detail['total'];
             }
             $order = Order::create([
-                'code' => GenerateCodeHelper::generateCode('ps', Order::class),
+                'code' => GenerateCodeHelper::generateCode('PS', Order::class),
                 'discount' => $request->discount,
                 'total_before_discount' => $total,
                 'total' => $total - $request->discount,
                 'total_pay' => $request->pay,
                 'user_id' => auth()->user()->id,
-                'payment_type' => $request->payment_type
+                'payment_type' => $request->payment_type,
+                'status' => 'process'
             ]);
             for($i = 0; $i < count($orderDetails); $i++) {
                 $orderDetails[$i]['order_id'] = $order->id;
