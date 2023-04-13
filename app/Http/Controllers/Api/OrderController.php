@@ -16,6 +16,25 @@ use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
+    public function setStatusDone(string $code) {
+        $order = Order::where('code', $code)->first();
+        if(is_null($order)) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Order tidak ditemukan'
+            ], 404);
+        }
+
+        if($order->status === 'done') {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Order sudah selesai'
+            ], 400);
+        }
+
+        $order->update(['status' => 'done']);
+        return response()->json(['status' => 'success', 'message' => 'Order berhasil diselesaikan']);
+    }
     public function getOrder() {
         $orders = [];
         $datas = Order::with('detail', 'detail.menu')->where('status', 'process')
