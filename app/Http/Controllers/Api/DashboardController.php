@@ -11,9 +11,13 @@ class DashboardController extends Controller
 {
     public function dashboard() {
         $orders = Order::whereDate('created_at', Carbon::now()->format('Y-m-d'))->get();
-        $orderStatus = $orders->countBy(function($value) {
-            return $value->status;
-        })->toArray();
+        if($orders->count() > 0) {
+            $orderStatus = $orders->countBy(function($value) {
+                return $value->status;
+            })->toArray();
+        } else {
+            $orderStatus = ['done' => 0, 'process' => 0];
+        }
         return response()->json([
             'status' => 'success',
             'data' => [
