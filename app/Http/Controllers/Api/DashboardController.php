@@ -25,8 +25,8 @@ class DashboardController extends Controller
                     return $value->total;
                 })),
                 'total_order' => $orders->count(),
-                'order_done' => $orderStatus['done'],
-                'order_process' => $orderStatus['process']
+                'order_done' => $orderStatus['done'] ?? 0,
+                'order_process' => $orderStatus['process'] ?? 0
             ]
         ]);
     }

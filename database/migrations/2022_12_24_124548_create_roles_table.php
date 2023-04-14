@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamps();
         });
         DB::table('roles')->insert([
-            ['name' => 'admin'],
+            ['name' => 'owner'],
             ['name' => 'staff'],
         ]);
     }

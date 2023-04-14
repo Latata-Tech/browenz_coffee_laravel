@@ -104,9 +104,6 @@ class EmployeeController extends Controller
     }
 
     public function update(UpdateEmployeeRequest $request, User $employee) {
-        if($request->role_id === 1 && auth()->user()->role_id === 1 && !is_null($employee->email)) {
-            return redirect()->back()->with('errors', 'Admin tidak dapat update user admin');
-        }
         $employee->update([
             'name' => $request->name,
             'phone_number' => $request->phone_number,
@@ -117,9 +114,6 @@ class EmployeeController extends Controller
     }
 
     public function delete(User $employee) {
-        if($employee->role_id === 1 && auth()->user()->role_id === 1 && !is_null($employee->email)) {
-            return redirect()->back()->with('failed', 'Admin tidak dapat menghapus user admin');
-        }
         $data = $employee;
         $employee->delete();
         return redirect()->back()->with('success', 'Berhasil hapus karyawan ' . $data->name);

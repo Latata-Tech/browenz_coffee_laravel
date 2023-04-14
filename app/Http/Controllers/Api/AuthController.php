@@ -26,6 +26,18 @@ class AuthController extends Controller
         ]);
     }
 
+    function user() {
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'id' => \auth()->user()->id,
+                'name' => \auth()->user()->name,
+                'email' => \auth()->user()->email,
+                'role_id' => \auth()->user()->role_id
+            ]
+        ]);
+    }
+
     function logout() {
 
     }

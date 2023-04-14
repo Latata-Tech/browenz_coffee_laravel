@@ -16,6 +16,52 @@ use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
+    public function getTotalOrder(Request $request) {
+        $datas = Order::with('detail', 'detail.menu');
+        if(!is_null($request->date)) {
+            $datas = $datas->whereDate('created_at', $request->date)->sum('total');
+        } else {
+            $datas = $datas->whereDate('created_at', Carbon::now()->format('Y-m-d'))->where('user_id', auth()->user()->id)->sum('total');
+        }
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'total' => $datas
+            ]
+        ]);
+    }
+    public function getOrders(Request $request) {
+        $orders = [];
+        $datas = Order::with('detail', 'detail.menu');
+        if(!is_null($request->date)) {
+            $datas = $datas->whereDate('created_at', $request->date)->get()->toArray();
+        } else {
+            $datas = $datas->whereDate('created_at', Carbon::now()->format('Y-m-d'))->where('user_id', auth()->user()->id)->get()->toArray();
+        }
+
+        foreach ($datas as $data) {
+            $orderItems = [];
+            foreach ($data['detail'] as $detail) {
+                $item = [
+                    'total' => $detail['total'],
+                    'qty' => $detail['qty'],
+                    'name' => $detail['menu']['name'],
+                    'variant' => $detail['variant'],
+                ];
+                $orderItems[] = $item;
+            }
+            $orders[] = [
+                'code' => $data['code'],
+                'payment_type' => $data['payment_type'],
+                'detail' => $orderItems,
+                'total' => $data['total']
+            ];
+        }
+        return response()->json([
+            'status' => 'success',
+            'data' => $orders
+        ]);
+    }
     public function setStatusDone(string $code) {
         $order = Order::where('code', $code)->first();
         if(is_null($order)) {
@@ -35,7 +81,7 @@ class OrderController extends Controller
         $order->update(['status' => 'done']);
         return response()->json(['status' => 'success', 'message' => 'Order berhasil diselesaikan']);
     }
-    public function getOrder() {
+    public function getOrderNotProcess() {
         $orders = [];
         $datas = Order::with('detail', 'detail.menu')->where('status', 'process')
             ->get()

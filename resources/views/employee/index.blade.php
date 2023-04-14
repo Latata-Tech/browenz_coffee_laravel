@@ -45,7 +45,7 @@
                         @endif
                         <td>{{$employee->name}}</td>
                         <td>{{$employee->status ? "Aktif" : "Tidak aktif"}}</td>
-                        @if(is_null($employee->role_id) && $employee->email === 'admin@browenz.com')
+                        @if($employee->role_id === 1)
                             <td>
                                 <a href="{{route('detailEmployee', ['employee' => $employee->id])}}"
                                    class="btn btn-sm btn-link"><i class="material-icons text-primary">preview</i></a>
@@ -64,7 +64,7 @@
                                    data-bs-toggle="modal" data-bs-target="#karyawanModal">
                                     <i class="material-icons text-danger">delete</i>
                                 </a>
-                                @if(auth()->user()->role_id === 1 && $employee->role_id === null || auth()->user()->email === 'admin@browenz.com')
+                                @if(auth()->user()->role_id === 1)
                                     <a href="{{route('createAccount', ['employee' => $employee->id])}}"
                                        class="btn btn-sm btn-primary">Buat Akun</a>
                                 @endif
@@ -82,7 +82,7 @@
                                    data-bs-toggle="modal" data-bs-target="#karyawanModal">
                                     <i class="material-icons text-danger">delete</i>
                                 </a>
-                                @if(auth()->user()->email === 'admin@browenz.com' || auth()->user()->role_id === 1)
+                                @if(auth()->user()->role_id === 1)
                                     <a href="{{route('updateAccount', ['employee' => $employee->id])}}"
                                        class="btn btn-sm btn-warning">Update Akun</a>
                                 @endif

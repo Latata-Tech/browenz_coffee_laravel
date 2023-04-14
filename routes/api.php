@@ -32,9 +32,11 @@ Route::middleware('auth:sanctum')->group(function () {
        Route::get('/', [MenuController::class, 'getMenu']);
    });
    Route::prefix('orders')->group(function () {
-       Route::get('/', [OrderController::class, 'getOrder']);
+       Route::get('/not-process', [OrderController::class, 'getOrderNotProcess']);
        Route::post('/', [OrderController::class, 'createOrder']);
        Route::put('/{code}', [OrderController::class, 'setStatusDone']);
+       Route::get('/', [OrderController::class, 'getOrders']);
+       Route::get('/total-today', [OrderController::class, 'getTotalOrder']);
    });
    Route::prefix('categories')->group(function () {
        Route::get('/', [CategoryController::class, 'findAll']);
