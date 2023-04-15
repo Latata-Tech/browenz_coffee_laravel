@@ -105,4 +105,8 @@ class MenuController extends Controller
             'ingredients' => Ingredient::all(['id', 'name'])
         ]);
     }
+
+    public function getMenuById(Menu $menu) {
+        return response()->json($menu);
+    }
 }

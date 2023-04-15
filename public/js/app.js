@@ -60,3 +60,17 @@ $('#addIngredient').on('click', function () {
     selectElm += "</select>";
     $('#ingredientsContainer').append(`<div class="mb-2 d-flex justify-content-center align-items-center">${selectElm}<span class="material-icons text-danger" onclick="removeIngredient(this)" style="cursor: pointer">close</span></div>`)
 })
+
+$('#menu_id').on('change', function () {
+    if($(this).val() !== '-') {
+        $.ajax({
+            url: 'https://46f3-2404-8000-1046-90-f0e3-b654-9e60-9445.ngrok-free.app/menus/get-menu/' + $(this).val()
+        }).then(value => {
+            $('#hot_price_before').val(new Intl.NumberFormat("id-ID").format(value.hot_price));
+            $('#ice_price_before').val(new Intl.NumberFormat("id-ID").format(value.ice_price));
+        })
+    } else {
+        $('#hot_price_before').val(0);
+        $('#ice_price_before').val(0);
+    }
+});

@@ -7,5 +7,6 @@
             class="form-control"
             value="{{$value ?? old($name)}}",
             placeholder="{{$placeholder ?? ""}}"
+            {{$disabled ?? ""}}
     >
 </div>

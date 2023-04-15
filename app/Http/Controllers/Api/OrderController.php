@@ -19,7 +19,7 @@ class OrderController extends Controller
     public function getTotalOrder(Request $request) {
         $datas = Order::with('detail', 'detail.menu');
         if(!is_null($request->date)) {
-            $datas = $datas->whereDate('created_at', $request->date)->sum('total');
+            $datas = $datas->whereDate('created_at', $request->date == "" ? Carbon::now()->format('Y-m-d') : $request->date)->sum('total');
         } else {
             $datas = $datas->whereDate('created_at', Carbon::now()->format('Y-m-d'))->where('user_id', auth()->user()->id)->sum('total');
         }
@@ -34,7 +34,7 @@ class OrderController extends Controller
         $orders = [];
         $datas = Order::with('detail', 'detail.menu');
         if(!is_null($request->date)) {
-            $datas = $datas->whereDate('created_at', $request->date)->get()->toArray();
+            $datas = $datas->whereDate('created_at', $request->date == "" ? Carbon::now()->format('Y-m-d') : $request->date)->get()->toArray();
         } else {
             $datas = $datas->whereDate('created_at', Carbon::now()->format('Y-m-d'))->where('user_id', auth()->user()->id)->get()->toArray();
         }
