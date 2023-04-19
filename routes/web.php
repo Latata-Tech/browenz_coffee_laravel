@@ -8,6 +8,7 @@ use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PromoController;
+use App\Http\Controllers\TransactionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -74,6 +75,15 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [PromoController::class, 'store'])->name('storePromo');
         Route::put('/update/{promo}', [PromoController::class, 'update'])->name('updatePromo');
         Route::delete('/delete/{promo}', [PromoController::class, 'delete'])->name('deletePromo');
+    });
+    Route::prefix('transactions')->group(function () {
+        Route::get('/', [TransactionController::class, 'index'])->name('transactions');
+        Route::get('/create', [TransactionController::class, 'create'])->name('createTransaction');
+        Route::get('/update/{id}', [TransactionController::class, 'edit'])->name('editTransaction');
+        Route::get('/detail/{transaction}', [TransactionController::class, 'detail'])->name('detailTransaction');
+        Route::post('/', [TransactionController::class, 'store'])->name('storeTransaction');
+        Route::put('/update/{id}', [TransactionController::class, 'update'])->name('updateTransaction');
+        Route::delete('/delete/{transaction}', [TransactionController::class, 'delete'])->name('deleteTransaction');
     });
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });

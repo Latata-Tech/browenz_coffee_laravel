@@ -53,7 +53,7 @@
                                     <span class="material-icons">book</span>&nbsp;
                                     Kategori
                                 </a></li>
-                            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded nav-link nav-text-color">
+                            <li><a href="{{route('promos')}}" class="link-body-emphasis d-inline-flex text-decoration-none rounded nav-link nav-text-color">
                                     <span class="material-icons">book</span>&nbsp;
                                     Promo</a></li>
                         </ul>
@@ -70,7 +70,7 @@
                                     <span class="material-icons">warehouse</span>&nbsp;
                                     Daftar Bahan Baku
                                 </a></li>
-                            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded nav-link nav-text-color">
+                            <li><a href="{{route('transactions')}}" class="link-body-emphasis d-inline-flex text-decoration-none rounded nav-link nav-text-color">
                                     <span class="material-icons">warehouse</span>&nbsp;
                                     Transaksi Stok
                                 </a></li>

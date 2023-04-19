@@ -47,6 +47,21 @@ function removeIngredient(elm) {
     elm.parentNode.remove();
 }
 
+function removeIngredientHtml() {
+    this.parentNode.parentNode.parentNode.parentNode.removeChild((this.parentNode.parentNode.parentNode));
+}
+
+function addIngredient() {
+    const node = document.getElementById('first').cloneNode(true);
+    const elm = document.createElement('span');
+    elm.className = "material-icons text-danger"
+    elm.style = "cursor: pointer";
+    elm.innerText = "close";
+    elm.addEventListener('click', removeIngredientHtml)
+    node.children[0].children[1].children[1].append(elm);
+    document.getElementById('ingredients_container').appendChild(node);
+}
+
 $('#addIngredient').on('click', function () {
     const options = document.getElementById('ingredient_id[]').options;
     const selectedOptions = [];
