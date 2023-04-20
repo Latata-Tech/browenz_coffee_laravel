@@ -80,4 +80,8 @@ class IngredientController extends Controller
         $except = explode(',',$request->exc);
         return Ingredient::select(['id', 'name'])->whereNotIn('id', $except)->get();
     }
+
+    public function detailIngredientJson($id) {
+        return response()->json(Ingredient::with('type')->find($id));
+    }
 }

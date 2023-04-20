@@ -47,6 +47,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [IngredientController::class, 'store'])->name('storeIngredient');
         Route::put('/update/{ingredient}', [IngredientController::class, 'update'])->name('updateIngredient');
         Route::delete('/delete/{ingredient}', [IngredientController::class, 'delete'])->name('deleteIngredient');
+        Route::get('detail-json/{id}', [IngredientController::class, 'detailIngredientJson']);
+        Route::get('/ingredient-except', [IngredientController::class, 'getIngredients']);
     });
     Route::prefix('menus')->group(function () {
         Route::get('/', [MenuController::class, 'index'])->name('menus');

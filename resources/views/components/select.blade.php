@@ -1,6 +1,6 @@
 <div class="my-3">
     <label for="">{{$label}}</label>
-    <select name="{{$name}}" id="{{$name}}" class="form-control" {{$onchange ?? ""}}>
+    <select name="{{$name}}" id="{{$name}}" class="form-control" {{$onchange ?? ""}} {{$onclick ?? ""}}>
         <option>-</option>
         @foreach($datas as $data)
             @if(is_null($selected))

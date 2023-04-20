@@ -17,10 +17,10 @@
         <div class="col-md-4">
             <form action="{{route('storeTransaction')}}" method="POST" enctype="multipart/form-data">
                 @csrf
-                @include('components.input', ['type' => 'date', 'name' => 'transaction_date', 'label' => 'Tanggal'])
+                @include('components.input', ['type' => 'date', 'name' => 'date', 'label' => 'Tanggal'])
                 <div class="form-group">
                     <label>Tipe</label>
-                    <select class="form-control">
+                    <select class="form-control" name="type">
                         <option value="in">Masuk</option>
                         <option value="out">Keluar</option>
                     </select>
@@ -28,12 +28,12 @@
                <div class="form-group" id="first">
                    <div class="row">
                        <div class="col-6">
-                           @include('components.select', ['datas' => $ingredients, 'name' => 'ingredient_id[]', 'label' => 'Bahan baku', 'selected' => null, 'onchange' => 'onchange="getType(this)"'])
+                           @include('components.select', ['datas' => $ingredients, 'name' => 'ingredient_id[]', 'label' => 'Bahan baku', 'selected' => null, 'onchange' => 'onchange=getStockType(this)'])
                        </div>
                        <div class="col-6">
                            <label class="mt-3">Jumlah</label>
                            <div class="input-group flex-nowrap align-items-center">
-                               <input type="number" class="form-control" name="qty">
+                               <input type="number" class="form-control" name="qties[]">
                                <span class="input-group-text" id="addon-wrapping">@</span>
                            </div>
                        </div>

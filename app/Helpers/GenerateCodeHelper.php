@@ -11,7 +11,7 @@ class GenerateCodeHelper {
             $numToStr = sprintf("%04d", 1);
             return "$prefix-$numToStr";
         }
-        $lastCode = (int)explode('-', $lastCode)[1];
+        $lastCode = (int)explode('-', $lastCode->code)[1];
         $numToStr = sprintf("%04d", ++$lastCode);
         return "$prefix-$numToStr";
     }

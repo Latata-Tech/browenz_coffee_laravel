@@ -1,3 +1,6 @@
+const baseURL = "https://a372-2404-8000-1046-90-1cba-89c4-538b-8bf8.ngrok-free.app";
+
+
 window.deleteModal = function (elm, id) {
     let formElement = document.getElementById(id);
     formElement.action = elm.getAttribute('data');
@@ -51,6 +54,15 @@ function removeIngredientHtml() {
     this.parentNode.parentNode.parentNode.parentNode.removeChild((this.parentNode.parentNode.parentNode));
 }
 
+function getStockType(elm) {
+    $.ajax({
+        url: baseURL + '/ingredients/detail-json/' + elm.value,
+        method: 'get'
+    }).then((value) => {
+        elm.parentNode.parentNode.parentNode.children[1].children[1].children[1].innerText = value.type.name
+    })
+}
+
 function addIngredient() {
     const node = document.getElementById('first').cloneNode(true);
     const elm = document.createElement('span');
@@ -59,6 +71,7 @@ function addIngredient() {
     elm.innerText = "close";
     elm.addEventListener('click', removeIngredientHtml)
     node.children[0].children[1].children[1].append(elm);
+    node.children[0].children[1].children[1].children[0].value = '';
     document.getElementById('ingredients_container').appendChild(node);
 }
 
@@ -79,7 +92,7 @@ $('#addIngredient').on('click', function () {
 $('#menu_id').on('change', function () {
     if($(this).val() !== '-') {
         $.ajax({
-            url: 'https://46f3-2404-8000-1046-90-f0e3-b654-9e60-9445.ngrok-free.app/menus/get-menu/' + $(this).val()
+            url: baseURL + '/menus/get-menu/' + $(this).val()
         }).then(value => {
             $('#hot_price_before').val(new Intl.NumberFormat("id-ID").format(value.hot_price));
             $('#ice_price_before').val(new Intl.NumberFormat("id-ID").format(value.ice_price));
@@ -89,3 +102,29 @@ $('#menu_id').on('change', function () {
         $('#ice_price_before').val(0);
     }
 });
+
+
+// Transaction Stock
+
+function addTransactionStock() {
+    let transactionDate = $('#transaction_stock').val();
+    let typeTransaction = $('#type_transaction').val();
+    let description = $('#description').val();
+    const ingredients = [];
+    document.getElementsByName('ingredient_id').forEach((val, key) => {
+        ingredients.push({id: val.value, qty:document.getElementsByName('qty')[key].value })
+    })
+    $.ajax({
+        url: baseURL + '/transactions',
+        data: {
+            date: transactionDate,
+            type: typeTransaction,
+            ingredients,
+            description
+        },
+        method: 'post',
+        success: function (data) {
+            console.log(data);
+        }
+    })
+}
