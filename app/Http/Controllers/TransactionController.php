@@ -7,6 +7,7 @@ use App\Models\Ingredient;
 use App\Models\IngredientStockHistory;
 use App\Models\TransactionStock;
 use App\Models\TransactionStockIngredient;
+use App\Rules\CheckDuplicateIngredient;
 use App\Rules\QtyStockRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,34 +15,117 @@ use Illuminate\Support\Facades\Log;
 
 class TransactionController extends Controller
 {
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $request->validate([
             'search' => 'nullable|string'
         ]);
-        return  view('transactions.index', [
+        return view('transactions.index', [
             'ingredient_transactions' => TransactionStock::with('ingredients')->filter(\request(['search']))->orderBy('transaction_date')->paginate(10)
         ]);
     }
 
-    public function create() {
+    public function create()
+    {
         return view('transactions.create', [
             'ingredients' => Ingredient::with('type')->get(),
         ]);
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         return view('transactions.edit', [
             'ingredients' => Ingredient::select(['name', 'id', 'type.name as type'])->with('type')->get(),
             'ingredient_transactions' => TransactionStock::with('ingredients')->find($id),
         ]);
     }
 
-    public function store(Request $request) {
+    public function update(Request $request, TransactionStock $transactionStock)
+    {
+        $request->validate([
+                'date' => 'required|date|date_format:Y-m-d',
+                'type' => 'required|in:in,out',
+                'ingredient_id' => 'required|array',
+                'ingredient_id.*' => ['required', 'exists:ingredients,id', new CheckDuplicateIngredient],
+                'qties' => ['required', 'array'],
+                'qties.*' => 'required|integer|min:0',
+                'description' => 'required|string'
+            ]
+        );
+        try {
+            DB::beginTransaction();
+            $transactionStock->update([
+                'transaction_date' => $request->date,
+                'type' => $request->type,
+                'description' => $request->description
+            ]);
+            for ($i = 0; $i < count($request->ingredient_id); $i++) {
+                $transIngredient = TransactionStockIngredient::where('transaction_stock_id', $transactionStock->id)
+                    ->where('ingredient_id', $request->ingredient_id[$i])->first();
+                if (is_null($transIngredient)) {
+                    $this->addTransactionIngredient([
+                        'ingredient_id' => $request->ingredient_id[$i],
+                        'qty' => $request->qties[$i],
+                        'transaction_id' => $transactionStock->id,
+                        'transaction_code' => $transactionStock->code
+                    ], $request->type);
+                } else {
+                    $stock = $request->qties[$i] - $transIngredient->qty;
+                    $transIngredient->update(['qty', $request->qties[$i]]);
+                    $history = [
+                        'ingredient_id' => $transIngredient->id,
+                        'prev_stock' => $transIngredient->ingredient->stock,
+                        'stock_type_id' => $transIngredient->ingredient->type->id,
+                    ];
+                    if ($request->type === 'in') {
+                        $transIngredient->ingredient->increment(['stock' => $stock]);
+                        $history['description'] = 'Update masuk bahan baku';
+                    } else {
+                        if ($stock < 0) $transIngredient->ingredient->increment(['stock' => abs($stock)]);
+                        else $transIngredient->ingredient->decrement(['stock' => $stock]);
+                        $history['description'] = 'Update keluar bahan baku';
+                    }
+                    $history['stock'] = $transIngredient->ingredient->stock;
+                    IngredientStockHistory::create($history);
+                }
+            }
+            DB::commit();
+            return redirect()->route('transactions')->with('success', 'Berhasil update transaksi bahan baku ' . $transactionStock->code);
+        } catch (\Throwable $e) {
+            Log::error($e);
+            DB::rollBack();
+            return redirect()->back()->with('failed', 'Terjadi kesalahan pada server');
+        }
+    }
+
+    public function addTransactionIngredient($data, $type)
+    {
+        $ingredient = Ingredient::find($data['ingredient_id']);
+        $transaction = TransactionStockIngredient::create([
+            'ingredient_id' => $ingredient->id,
+            'qty' => $data['qty'],
+            'stock_type_id' => $ingredient->type->id,
+            'transaction_stock_id' => $data['transaction_id']
+        ]);
+        $history = [
+            'ingredient_id' => $transaction->id,
+            'prev_stock' => $transaction->ingredient->stock,
+            'stock_type_id' => $transaction->ingredient->type->id,
+        ];
+        if ($type === 'in') $ingredient->increment('stock', $transaction->qty);
+        else $ingredient->decrement('stock', $transaction->qty);
+        $history['stock'] = $ingredient->stock;
+        $history['description'] = 'Tambah keluar bahan baku ' . $data['transaction_code'];
+        IngredientStockHistory::created($history);
+    }
+
+    public function store(Request $request)
+    {
         $request->validate([
             'date' => 'required|date|date_format:Y-m-d',
             'type' => 'required|in:in,out',
             'ingredient_id' => 'required|array',
-            'ingredient_id.*' => 'required|exists:ingredients,id',
+            'ingredient_id.*' => ['required', 'exists:ingredients,id', new CheckDuplicateIngredient],
             'qties' => ['required', 'array'],
             'qties.*' => 'required|integer|min:0',
             'description' => 'required|string'
@@ -54,10 +138,10 @@ class TransactionController extends Controller
                 'code' => GenerateCodeHelper::generateCode('TS', TransactionStock::class),
                 'description' => $request->description
             ]);
-            for($i = 0; $i < count($request->ingredient_id); $i++) {
+            for ($i = 0; $i < count($request->ingredient_id); $i++) {
                 $ingredient = Ingredient::find($request->ingredient_id[$i]);
-                if($request->type == 'out') {
-                    if($request->qties[$i] > $ingredient->stock) {
+                if ($request->type == 'out') {
+                    if ($request->qties[$i] > $ingredient->stock) {
                         throw new \Exception('Quantity ' . $ingredient->name . ' yang keluar melebih dari yang tersedia', 400);
                     }
                 }
@@ -73,7 +157,7 @@ class TransactionController extends Controller
                     'prev_stock' => $ingredient->stock,
                     'stock_type_id' => $ingredient->type->id,
                 ];
-                if($request->type == 'out') {
+                if ($request->type == 'out') {
                     $ingredient->decrement('stock', $request->qties[$i]);
                     $history['description'] = 'Keluar';
                 } else {
@@ -88,7 +172,7 @@ class TransactionController extends Controller
         } catch (\Throwable $e) {
             Log::error($e);
             DB::rollBack();
-            if($e->getCode() == 400) {
+            if ($e->getCode() == 400) {
                 return redirect()->back()->with('failed', $e->getMessage());
             }
             return redirect()->back()->with('failed', 'Terjadi kesalahan pada server');
