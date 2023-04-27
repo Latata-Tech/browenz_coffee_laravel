@@ -70,6 +70,7 @@ function addIngredient() {
     elm.style = "cursor: pointer";
     elm.innerText = "close";
     elm.addEventListener('click', removeIngredientHtml)
+    node.classList.remove("d-none");
     node.children[0].children[1].children[1].append(elm);
     node.children[0].children[1].children[1].children[0].value = '';
     document.getElementById('ingredients_container').appendChild(node);

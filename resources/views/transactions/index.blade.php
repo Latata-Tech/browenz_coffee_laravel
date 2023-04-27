@@ -68,7 +68,7 @@
             </div>
         @endif
     </div>
-    @include('components.modal-delete', ['action' => 'promo'])
+    @include('components.modal-delete', ['action' => 'transaction'])
 @endsection
 
 @section('footer')

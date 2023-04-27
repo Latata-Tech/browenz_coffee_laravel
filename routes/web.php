@@ -84,7 +84,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/update/{id}', [TransactionController::class, 'edit'])->name('editTransaction');
         Route::get('/detail/{transaction}', [TransactionController::class, 'detail'])->name('detailTransaction');
         Route::post('/', [TransactionController::class, 'store'])->name('storeTransaction');
-        Route::put('/update/{id}', [TransactionController::class, 'update'])->name('updateTransaction');
+        Route::put('/update/{transaction}', [TransactionController::class, 'update'])->name('updateTransaction');
         Route::delete('/delete/{transaction}', [TransactionController::class, 'delete'])->name('deleteTransaction');
     });
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
