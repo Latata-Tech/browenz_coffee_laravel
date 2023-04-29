@@ -21,6 +21,10 @@ class Menu extends Model
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
+    public function promo() {
+        return $this->hasMany(MenuPromo::class, 'menu_id', 'id');
+    }
+
     public function scopeFilter($query, $filter) {
         $query->when($filter['search'] ?? false, function($query, $filter) {
            return $query->where('name', 'like', '%' .$filter. '%')

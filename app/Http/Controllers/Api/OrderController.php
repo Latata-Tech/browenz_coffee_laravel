@@ -114,10 +114,11 @@ class OrderController extends Controller
             DB::beginTransaction();
             $total = 0;
             $orderDetails = [];
+            $totalBeforeDiscount = 0;
+            $discount = 0;
             foreach ($request->menus as $orderMenu) {
-                $promo = MenuPromo::where('menu_id', $orderMenu['id'])
-                    ->where('start_date', '>=', Carbon::now()->format('Y-m-d'))
-                    ->where('end_date', '<=', Carbon::now()->format('Y-m-d'))->first();
+                $promo = MenuPromo::where('menu_id', $orderMenu['id'])->orderBy('created_at', 'desc')->first();
+
 
                 $menu = Menu::find($orderMenu['id']);
                 $detail = [
@@ -128,22 +129,23 @@ class OrderController extends Controller
                     'created_at' => null,
                     'updated_at' => null,
                 ];
-                if($orderMenu['variant'] === 'hot') {
-                    $price = is_null($promo) ? $menu->hot_price : $promo->hot_price;
-                } else {
-                    $price = is_null($promo) ? $menu->ice_price : $promo->ice_price;
+                $price = $orderMenu['variant'] === 'hot' ? $menu->hot_price : $menu->ice_price;
+                if (!is_null($promo) && Carbon::now()->getTimestamp() >= Carbon::createFromDate($promo->start_date)->getTimestamp() && Carbon::now()->getTimestamp() <= Carbon::createFromDate($promo->end_date)->getTimestamp()) {
+                    $detail['menu_promo_id'] = $promo->id;
+                    $price = $orderMenu['variant'] === 'hot' ? $promo->hot_price : $promo->ice_price;
+                    $discount += $orderMenu['variant'] === 'hot' ? ($menu->hot_price - $promo->hot_price) * $orderMenu['qty'] : ($menu->ice_price - $promo->ice_price) * $orderMenu['qty'];
+                    $totalBeforeDiscount += $orderMenu['variant'] === 'hot' ? $menu->hot_price * $orderMenu['qty'] : $menu->ice_price * $orderMenu['qty'];
                 }
                 $detail['price'] = $price;
                 $detail['total'] = $price * $orderMenu['qty'];
-                $detail['menu_promo_id'] = is_null($promo) ? null : $promo->id;
                 $orderDetails[] = $detail;
                 $total += $detail['total'];
             }
             $order = Order::create([
                 'code' => GenerateCodeHelper::generateCode('PS', Order::class),
-                'discount' => $request->discount,
-                'total_before_discount' => $total,
-                'total' => $total - $request->discount,
+                'discount' => $discount,
+                'total_before_discount' => $totalBeforeDiscount,
+                'total' => $total,
                 'total_pay' => $request->pay,
                 'user_id' => auth()->user()->id,
                 'payment_type' => $request->payment_type,

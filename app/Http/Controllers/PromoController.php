@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Menu;
 use App\Models\MenuPromo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PromoController extends Controller
@@ -44,6 +45,7 @@ class PromoController extends Controller
         if(strtotime($request->end_date) < strtotime($request->start_date)) {
             return redirect()->back()->with('failed', 'Tanggal berakhir tidak boleh lebih kecil dari mulai');
         }
+
         MenuPromo::create([
             'menu_id' => $request->menu_id,
             'name' => $request->name,

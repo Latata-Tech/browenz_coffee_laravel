@@ -24,7 +24,6 @@ class OrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'discount' => 'required|integer|min:0',
             'menus' => 'required|array',
             'menus.*.id' => 'required|exists:menus,id',
             'menus.*.qty' => 'required|integer|min:1',

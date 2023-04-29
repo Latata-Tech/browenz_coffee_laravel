@@ -8,14 +8,15 @@ use App\Models\IngredientStockHistory;
 use App\Models\TransactionStock;
 use App\Models\TransactionStockIngredient;
 use App\Rules\CheckDuplicateIngredient;
-use App\Rules\QtyStockRule;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class TransactionController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $request->validate([
             'search' => 'nullable|string'
@@ -25,14 +26,14 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         return view('transactions.create', [
             'ingredients' => Ingredient::with('type')->get(),
         ]);
     }
 
-    public function detail(TransactionStock $transaction)
+    public function detail(TransactionStock $transaction): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         return view('transactions.detail', [
             'ingredients' => Ingredient::with('type')->get(),
@@ -40,7 +41,7 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function edit($id)
+    public function edit($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         return view('transactions.edit', [
             'ingredients' => Ingredient::with('type')->get(),
@@ -48,7 +49,7 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function update(Request $request, TransactionStock $transaction)
+    public function update(Request $request, TransactionStock $transaction): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
                 'date' => 'required|date|date_format:Y-m-d',
@@ -100,14 +101,14 @@ class TransactionController extends Controller
             }
             DB::commit();
             return redirect()->route('transactions')->with('success', 'Berhasil update transaksi bahan baku ' . $transaction->code);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Log::error($e);
             DB::rollBack();
             return redirect()->back()->with('failed', 'Terjadi kesalahan pada server');
         }
     }
 
-    public function delete(TransactionStock $transaction)
+    public function delete(TransactionStock $transaction): \Illuminate\Http\RedirectResponse
     {
         try {
             DB::beginTransaction();
@@ -130,7 +131,7 @@ class TransactionController extends Controller
             $transaction->delete();
             DB::commit();
             return redirect()->back()->with('success', 'Berhasil hapus transaksi bahan baku dengan code transaksi : ' . $transaction->code);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Log::error($e);
             DB::rollBack();
             return redirect()->back()->with('failed', 'Terjadi kesalahan pada server');
@@ -138,7 +139,7 @@ class TransactionController extends Controller
 
     }
 
-    public function addTransactionIngredient($data, $type)
+    public function addTransactionIngredient($data, $type): void
     {
         $ingredient = Ingredient::find($data['ingredient_id']);
         $transaction = TransactionStockIngredient::create([
@@ -159,7 +160,7 @@ class TransactionController extends Controller
         IngredientStockHistory::created($history);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
             'date' => 'required|date|date_format:Y-m-d',
@@ -182,7 +183,7 @@ class TransactionController extends Controller
                 $ingredient = Ingredient::find($request->ingredient_id[$i]);
                 if ($request->type == 'out') {
                     if ($request->qties[$i] > $ingredient->stock) {
-                        throw new \Exception('Quantity ' . $ingredient->name . ' yang keluar melebih dari yang tersedia', 400);
+                        throw new Exception('Quantity ' . $ingredient->name . ' yang keluar melebih dari yang tersedia', 400);
                     }
                 }
                 $transactionIngredient = [
@@ -209,7 +210,7 @@ class TransactionController extends Controller
             }
             DB::commit();
             return redirect()->route('transactions')->with('success', 'Berhasil tambah transaksi stok');
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Log::error($e);
             DB::rollBack();
             if ($e->getCode() == 400) {
