@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\SellingController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -86,6 +87,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [TransactionController::class, 'store'])->name('storeTransaction');
         Route::put('/update/{transaction}', [TransactionController::class, 'update'])->name('updateTransaction');
         Route::delete('/delete/{transaction}', [TransactionController::class, 'delete'])->name('deleteTransaction');
+    });
+    Route::prefix('sellings')->group(function () {
+        Route::get('/', [SellingController::class, 'index'])->name('sellings');
+        Route::get('/{order}', [SellingController::class, 'detail'])->name('detailSelling');
     });
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });

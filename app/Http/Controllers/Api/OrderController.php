@@ -130,7 +130,7 @@ class OrderController extends Controller
                     'updated_at' => null,
                 ];
                 $price = $orderMenu['variant'] === 'hot' ? $menu->hot_price : $menu->ice_price;
-                if (!is_null($promo) && Carbon::now()->getTimestamp() >= Carbon::createFromDate($promo->start_date)->getTimestamp() && Carbon::now()->getTimestamp() <= Carbon::createFromDate($promo->end_date)->getTimestamp()) {
+                if (!is_null($promo) && Carbon::createFromDate(Carbon::now()->format('Y-m-d'))->getTimestamp() >= Carbon::createFromDate($promo->start_date)->getTimestamp() && Carbon::createFromDate(Carbon::now()->format('Y-m-d'))->getTimestamp() <= Carbon::createFromDate($promo->end_date)->getTimestamp()) {
                     $detail['menu_promo_id'] = $promo->id;
                     $price = $orderMenu['variant'] === 'hot' ? $promo->hot_price : $promo->ice_price;
                     $discount += $orderMenu['variant'] === 'hot' ? ($menu->hot_price - $promo->hot_price) * $orderMenu['qty'] : ($menu->ice_price - $promo->ice_price) * $orderMenu['qty'];

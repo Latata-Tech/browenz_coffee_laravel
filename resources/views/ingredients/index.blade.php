@@ -58,7 +58,7 @@
                 </tbody>
             </table>
         </div>
-        @if($ingredients->count() > 10)
+        @if($ingredients->count() >= 10)
             <div class="card-footer">
                 {{$ingredients->links('vendor.pagination.bootstrap-5')}}
             </div>

@@ -12,18 +12,19 @@
     </div>
     @include('components.success')
     @include('components.error-custom', ['errorName' => 'failed'])
-    <a href="{{route('createEmployee')}}" class="btn btn-primary my-3">Tambah Karyawan</a>
     <div class="row">
-        <div class="col-6">
+        <div class="col-6 justify-content-center">
             <h4>Daftar Karyawan</h4>
         </div>
-        <div class="col-3"></div>
-        <div class="col-3">
-            @include('components.search', ['action' => route('employees')])
-        </div>
+        <div class="col-6 text-end"><a href="{{route('createEmployee')}}" class="btn btn-primary">Tambah</a></div>
     </div>
     <div class="card w-100">
         <div class="card-body">
+            <div class="row">
+                <div class="col-4">
+                    @include('components.search', ['action' => route('employees')])
+                </div>
+            </div>
             <table class="table">
                 <thead>
                 <tr>
@@ -93,7 +94,7 @@
                 </tbody>
             </table>
         </div>
-        @if($employees->count() > 10)
+        @if($employees->count() >= 10)
             <div class="card-footer">
                 {{$employees->links('vendor.pagination.bootstrap-5')}}
             </div>

@@ -60,7 +60,7 @@
                 </tbody>
             </table>
         </div>
-        @if($menus->count() > 10)
+        @if($menus->count() >= 10)
             <div class="card-footer">
                 {{$menus->links('vendor.pagination.bootstrap-5')}}
             </div>

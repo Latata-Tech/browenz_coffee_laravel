@@ -2,7 +2,7 @@
     <div class="card-body">
         <div class="row row-col-2">
             <div class="col">
-                <div class="text-bold fs-2">
+                <div style="font-size: 33px;font-weight: 600">
                     {{ $title }}
                 </div>
                 <div class="fs-4">
@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div class="col text-center flex justify-content-center align-items-center">
-                <span class="material-icons" style="font-size: 84px">{{ $icon }}</span>
+                <span class="material-icons" style="font-size: 84px;color: #1A72DD">{{ $icon }}</span>
             </div>
         </div>
     </div>

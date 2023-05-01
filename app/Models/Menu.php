@@ -25,9 +25,13 @@ class Menu extends Model
         return $this->hasMany(MenuPromo::class, 'menu_id', 'id');
     }
 
+    public function order() {
+        return $this->hasMany(OrderDetail::class, 'menu_id', 'id');
+    }
+
     public function scopeFilter($query, $filter) {
         $query->when($filter['search'] ?? false, function($query, $filter) {
-           return $query->where('name', 'like', '%' .$filter. '%')
+           return $query->whereRaw("LOWER(name) LIKE ?", ['%'.$filter.'%'])
                ->orWhereRelation('category', 'name', 'like', '%'.$filter.'%');
         });
 

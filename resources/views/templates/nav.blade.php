@@ -27,15 +27,14 @@
         <div class="position-sticky pt-3 sidebar-sticky">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link active nav-text-color d-flex align-items-center" aria-current="page" href="#">
+                    <a class="nav-link active nav-text-color d-flex align-items-center" aria-current="page" href="{{route('dashboard')}}">
                         <span class="material-icons">dashboard</span>&nbsp;
                         Dashboard
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-text-color d-flex align-items-center" href="#">
-                        <span class="material-icons">point_of_sale</span>&nbsp;
-                        Penjualan
+                    <a class="nav-link active nav-text-color d-flex align-items-center" aria-current="page" href="{{route('sellings')}}">
+                        <span class="material-icons">point_of_sales</span>&nbsp;Penjualan
                     </a>
                 </li>
                 <li class="mb-1 nav-item">

@@ -21,7 +21,7 @@ class MenuController extends Controller
         $menus = [];
         foreach ($data['data'] as $menu) {
             $promo = MenuPromo::where('menu_id', $menu['id'])->orderBy('created_at', 'desc')->first();
-            if (!is_null($promo) && Carbon::now()->getTimestamp() >= Carbon::createFromDate($promo->start_date)->getTimestamp() && Carbon::now()->getTimestamp() <= Carbon::createFromDate($promo->end_date)->getTimestamp()) {
+            if (!is_null($promo) && Carbon::createFromDate(Carbon::now()->format('Y-m-d'))->getTimestamp() >= Carbon::createFromDate($promo->start_date)->getTimestamp() && Carbon::createFromDate(Carbon::now()->format('Y-m-d'))->getTimestamp() <= Carbon::createFromDate($promo->end_date)->getTimestamp()) {
                 $menu['promo_hot_price'] = $promo->hot_price;
                 $menu['promo_ice_price'] = $promo->ice_price;
             } else {
