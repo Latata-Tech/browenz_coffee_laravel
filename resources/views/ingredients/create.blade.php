@@ -7,19 +7,18 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid border-bottom my-3">
-        <h4>Karyawan</h4>
+    <div class="container-fluid my-3 border border-black d-flex align-items-center" style="border-bottom: 1px solid #333 !important;">
+        <a href="{{route('ingredients')}}"><span class="material-icons" style="color: #1A72DD">chevron_left</span></a><h4>Tambah Bahan Baku</h4>
     </div>
-    <a href="{{route('ingredients')}}" class="btn btn-secondary btn-sm">Kembali</a>
     @include('components.error')
     <form action="{{route('storeIngredient')}}" method="POST">
         @csrf
         <div class="row row-col-2">
             <div class="col-md-3">
-                @include('components.input', ['type' => 'text', 'name' => 'name', 'label' => 'Nama'])
-                @include('components.input', ['type' => 'number', 'name' => 'stock', 'label' => 'Stok'])
-                @include('components.select', ['datas' => $stock_types, 'name' => 'stock_type_id', 'label' => 'Tipe Stok', 'selected' => null])
-                @include('components.textarea', ['name' => 'description', 'label' => 'Deksripsi'])
+                @include('components.input', ['type' => 'text', 'name' => 'name', 'label' => 'Nama', 'placeholder' => 'Masukan nama'])
+                @include('components.select', ['datas' => $stock_types, 'name' => 'stock_type_id', 'label' => 'Satuan', 'selected' => null, 'placeholder' => 'Pilih Satuan'])
+                @include('components.input', ['type' => 'number', 'name' => 'stock', 'label' => 'Stok', 'placeholder' => 'Masukan stok'])
+                @include('components.textarea', ['name' => 'description', 'label' => 'Deksripsi', 'placeholder' => 'Masukan Deskripsi'])
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Simpan</button>

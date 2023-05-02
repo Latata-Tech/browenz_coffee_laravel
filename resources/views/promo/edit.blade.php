@@ -7,10 +7,9 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid border-bottom my-3">
-        <h4>Promo</h4>
+    <div class="container-fluid my-3 border border-black d-flex align-items-center" style="border-bottom: 1px solid #333 !important;">
+        <a href="{{route('promos')}}"><span class="material-icons" style="color: #1A72DD">chevron_left</span></a><h4>Edit promo</h4>
     </div>
-    <a href="{{route('promos')}}" class="btn btn-secondary btn-sm">Kembali</a>
     @include('components.error')
     @include('components.error-custom', ['errorName' => 'failed'])
     <div class="row">
@@ -22,7 +21,7 @@
                 @include('components.input', ['type' => 'text', 'name' => 'menu', 'label' => 'Menu', 'placeholder' => '', 'value' => $promo->menu->name, 'disabled' => 'disabled'])
                 <div class="row">
                     <div class="col-md-6">
-                        <label>Harga Awal</label>
+                        <label class="fw-bold">Harga Awal</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">Hot</span>
                             <input type="text" class="form-control" id="hot_price_before" disabled style="text-align: right" value="{{number_format($promo->menu->hot_price, 0, ',', '.')}}">
@@ -33,7 +32,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label>Harga Promo</label>
+                        <label class="fw-bold">Harga Promo</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1"><input type="checkbox" {{$promo->hot_price !== 0 ? 'checked' : ''}} onchange="undisabled(this, 'hot_price')" name="">&nbsp;Hot</span>
                             <input type="text" class="form-control" {{$promo->hot_price !== 0 ? '' : 'disabled'}} name="hot_price" id="hot_price" onkeyup="price(this)" style="text-align: right" value="{{number_format($promo->hot_price, 0, ',', '.')}}">

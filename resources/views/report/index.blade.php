@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid border-bottom my-3">
+    <div class="container-fluid my-3 border border-black d-flex align-items-center" style="border-bottom: 1px solid #333 !important;">
         <h4>Laporan</h4>
     </div>
     @include('components.success')
@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                <label class="form-label fw-bold">Dari</label>
+                                <label class="form-label fw-bold">Sampai</label>
                                 <input type="date" name="end_date" class="form-control">
                             </div>
                         </div>
@@ -45,7 +45,7 @@
                 <div class="d-none d-flex" id="monthly-yearly">
                     <div class="form-group" id="monthly">
                         <label class="form-label fw-bold">Bulan</label>
-                        <select class="form-control" name="month" id="month">
+                        <select class="form-control" name="month" id="month" style="width: 200px">
                             @for($i = 0; $i < count($month); $i++)
                                 <option value="{{$i+1}}">{{$month[$i]}}</option>
                             @endfor
@@ -53,7 +53,7 @@
                     </div>
                     <div class="form-group" id="yearly">
                         <label class="form-label fw-bold">Tahun</label>
-                        <select class="form-control" name="year" id="year">
+                        <select class="form-control" name="year" id="year" style="width: 200px">
                             @for($i = now()->format('Y'); $i > now()->format('Y') - 3; $i--)
                                 <option value="{{$i}}">{{$i}}</option>
                             @endfor

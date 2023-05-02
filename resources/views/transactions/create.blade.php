@@ -7,10 +7,9 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid border-bottom my-3">
-        <h4>Transaksi Stok</h4>
+    <div class="container-fluid my-3 border border-black d-flex align-items-center" style="border-bottom: 1px solid #333 !important;">
+        <a href="{{route('transactions')}}"><span class="material-icons" style="color: #1A72DD">chevron_left</span></a><h4>Tambah Transaksi Stok</h4>
     </div>
-    <a href="{{route('transactions')}}" class="btn btn-secondary btn-sm">Kembali</a>
     @include('components.error')
     @include('components.error-custom', ['errorName' => 'failed'])
     <div class="row">
@@ -19,7 +18,7 @@
                 @csrf
                 @include('components.input', ['type' => 'date', 'name' => 'date', 'label' => 'Tanggal'])
                 <div class="form-group">
-                    <label>Tipe</label>
+                    <label class="fw-bold">Tipe</label>
                     <select class="form-control" name="type">
                         <option value="in">Masuk</option>
                         <option value="out">Keluar</option>
@@ -28,10 +27,10 @@
                <div class="form-group" id="first">
                    <div class="row">
                        <div class="col-6">
-                           @include('components.select', ['datas' => $ingredients, 'name' => 'ingredient_id[]', 'label' => 'Bahan baku', 'selected' => null, 'onchange' => 'onchange=getStockType(this)'])
+                           @include('components.select', ['datas' => $ingredients, 'name' => 'ingredient_id[]', 'label' => 'Bahan baku', 'selected' => null, 'onchange' => 'onchange=getStockType(this)', 'placeholder' => 'Pilih Bahan Baku'])
                        </div>
                        <div class="col-6">
-                           <label class="mt-3">Jumlah</label>
+                           <label class="mt-3 fw-bold">Jumlah</label>
                            <div class="input-group flex-nowrap align-items-center">
                                <input type="number" class="form-control" name="qties[]">
                                <span class="input-group-text" id="addon-wrapping">@</span>
