@@ -77,7 +77,7 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-sm btn-primary mt-1">Download</button>
+        <button class="btn btn-sm btn-primary mt-1">Lihat</button>
     </form>
 @endsection
 

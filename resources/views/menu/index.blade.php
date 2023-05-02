@@ -17,7 +17,7 @@
             <h4>Daftar Menu</h4>
         </div>
         <div class="col-6 text-end">
-            <a href="{{route('createMenu')}}" class="btn btn-primary">Tambah Menu</a>
+            <a href="{{route('createMenu')}}" class="btn btn-primary">Tambah</a>
         </div>
     </div>
     <div class="card w-100">

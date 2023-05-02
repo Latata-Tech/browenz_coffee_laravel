@@ -22,7 +22,7 @@
                 @include('components.input', ['type' => 'date', 'name' => 'birth_date', 'label' => 'Tanggal Lahir', 'value' => $employee->birth_date])
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Ubah</button>
+        <button type="submit" class="btn btn-primary">Simpan</button>
     </form>
 @endsection
 
