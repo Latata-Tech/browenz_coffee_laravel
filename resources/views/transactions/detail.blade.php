@@ -8,7 +8,7 @@
 
 @section('content')
     <div class="container-fluid my-3 border border-black d-flex align-items-center" style="border-bottom: 1px solid #333 !important;">
-        <a href="{{route('transactions')}}"><span class="material-icons" style="color: #1A72DD">chevron_left</span></a><h4>Detil Transaksi Stok</h4>
+        <a href="{{route('transactions')}}"><span class="material-icons" style="color: #1A72DD">chevron_left</span></a><h4>Detail Transaksi Stok</h4>
     </div>
     @include('components.error')
     @include('components.error-custom', ['errorName' => 'failed'])

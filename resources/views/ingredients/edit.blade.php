@@ -18,8 +18,8 @@
         <div class="row row-col-2">
             <div class="col-md-3">
                 @include('components.input', ['type' => 'text', 'name' => 'name', 'label' => 'Nama', 'value' => $ingredient->name])
+                @include('components.select', ['datas' => $stock_types, 'name' => 'stock_type_id', 'label' => 'Satuan', 'selected' => $ingredient->stock_type_id])
                 @include('components.input', ['type' => 'number', 'name' => 'stock', 'label' => 'Stok', 'value' => $ingredient->stock])
-                @include('components.select', ['datas' => $stock_types, 'name' => 'stock_type_id', 'label' => 'Tipe Stok', 'selected' => $ingredient->stock_type_id])
                 @include('components.textarea', ['type' => 'text', 'name' => 'description', 'label' => 'Deksripsi', 'value' => $ingredient->description])
             </div>
         </div>
