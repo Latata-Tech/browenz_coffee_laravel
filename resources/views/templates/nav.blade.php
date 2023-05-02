@@ -1,7 +1,7 @@
 <div class="row">
     <nav class="navbar navbar-dark bg-primary" aria-label="First navbar example">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img src="{{asset('images/logo.png')}}" width="35" height="35">&nbsp;Browenz Coffee</a>
+            <a class="navbar-brand" href="#"><img src="{{asset('images/logo.png')}}" width="35" height="35">&nbsp;Browenz POS</a>
             <div class="dropdown">
                 <button class="btn dropdown-toggle d-flex align-items-center text-white" style="margin-right:130px" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">

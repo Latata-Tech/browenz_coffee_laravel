@@ -7,10 +7,7 @@
 @endsection
 
 @section('content')
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Dashboard</h1>
-    </div>
-    <div class="row row-col-4">
+    <div class="row row-col-4 mt-5">
         <div class="col-md-4">
             @include('components.card-dashboard', ['title' => $orders, 'subtitle' => 'Jumlah pesanan hari ini', 'icon' => 'receipt'])
         </div>

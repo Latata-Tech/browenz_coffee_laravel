@@ -7,10 +7,9 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid border-bottom my-3">
-        <h4>Karyawan</h4>
+    <div class="container-fluid my-3 border border-black d-flex align-items-center" style="border-bottom: 1px solid #333 !important;">
+        <a href="{{route('employees')}}"><span class="material-icons" style="color: #1A72DD">chevron_left</span></a><h4>Ubah Akun</h4>
     </div>
-    <a href="{{route('employees')}}" class="btn btn-secondary btn-sm">Kembali</a>
     @include('components.error')
     <form action="{{route('storeUpdateAccount', ['employee' => $employee->id])}}" method="POST">
         @csrf

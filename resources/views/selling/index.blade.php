@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid border-bottom my-3">
+    <div class="container-fluid my-3 border border-black d-flex align-items-center" style="border-bottom: 1px solid #333 !important;">
         <h4>Penjualan</h4>
     </div>
     <div class="row">

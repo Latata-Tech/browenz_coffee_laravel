@@ -7,8 +7,8 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid border-bottom my-3">
-        <h4>Karyawan</h4>
+    <div class="container-fluid my-3 border border-black d-flex align-items-center" style="border-bottom: 1px solid #333 !important;">
+        <span class="material-icons" style="color: #1A72DD">chevron_left</span></a><h4>Karyawan</h4>
     </div>
     @include('components.success')
     @include('components.error-custom', ['errorName' => 'failed'])
