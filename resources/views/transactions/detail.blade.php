@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            @foreach($ingredient_transactions->ingredients as $key => $value)
+            @foreach($ingredient_transactions->detail as $key => $value)
                 <div class="form-group">
                     <div class="row">
                         <div class="col-6">

@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::table('ingredient_stock_histories', function (Blueprint $table) {
             $table->text('description')->nullable();
+            $table->unsignedBigInteger('transaction_stock_ingredient_id')->nullable();
+            $table->foreign('transaction_stock_ingredient_id')->references('id')->on('transaction_stock_ingredients');
         });
     }
 
@@ -26,7 +28,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('ingredient_stock_histories', function (Blueprint $table) {
-            $table->dropColumn(['description']);
+            $table->dropColumn(['description', 'transaction_stock_ingredient_id']);
         });
     }
 };

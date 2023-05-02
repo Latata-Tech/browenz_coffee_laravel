@@ -18,7 +18,7 @@ class TransactionStock extends Model
         });
     }
 
-    public function ingredients() {
+    public function detail() {
         return $this->hasMany(TransactionStockIngredient::class, 'transaction_stock_id', 'id');
     }
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\SellingController;
+use App\Http\Controllers\ReportController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -91,6 +92,10 @@ Route::middleware('auth')->group(function () {
     Route::prefix('sellings')->group(function () {
         Route::get('/', [SellingController::class, 'index'])->name('sellings');
         Route::get('/{order}', [SellingController::class, 'detail'])->name('detailSelling');
+    });
+    Route::prefix('reports')->group(function () {
+//       Route::get('/selling-report', [ReportController::class, 'export'])->name('sellingExport');
+       Route::get('/ingredient-report', [ReportController::class, 'ingredientExport'])->name('ingredientExport');
     });
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });

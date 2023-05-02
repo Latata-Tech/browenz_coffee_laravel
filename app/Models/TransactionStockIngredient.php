@@ -14,4 +14,8 @@ class TransactionStockIngredient extends Model
     public function ingredient() {
         return $this->belongsTo(Ingredient::class, 'ingredient_id', 'id');
     }
+
+    public function histories() {
+        return $this->hasMany(IngredientStockHistory::class, 'transaction_stock_ingredient_id', 'id');
+    }
 }

@@ -36,7 +36,7 @@
                 @include('components.input', ['type' => 'date', 'name' => 'date', 'label' => 'Tanggal', "value" => $ingredient_transactions->transaction_date])
                 @include('components.input', ['type' => 'text', 'name' => 'type', 'label' => 'Tipe', "value" => $ingredient_transactions->type === "in" ? "Masuk" : "Keluar"])
 
-                @foreach($ingredient_transactions->ingredients as $key => $value)
+                @foreach($ingredient_transactions->detail as $key => $value)
                     <div class="form-group">
                         <div class="row">
                             <div class="col-6">

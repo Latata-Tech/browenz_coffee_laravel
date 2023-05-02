@@ -15,6 +15,18 @@
     <div class="row mb-2">
         <div class="col-6 justify-content-center">
             <h4>Daftar Transaksi</h4>
+            <div style="width: 300px">
+                <form action="" method="get">
+                    <div class="input-group mb-3">
+                        <select class="form-control" onchange="filterTransaction(this)">
+                            <option>-</option>
+                            <option value="monthly">Bulan</option>
+                            <option value="yearly">Tahun</option>
+                        </select>
+                        <select class="form-control" id="filter-transaction"></select>
+                    </div>
+                </form>
+            </div>
         </div>
         <div class="col-6 text-end">
             <a href="{{route('createTransaction')}}" class="btn btn-primary">Tambah</a>

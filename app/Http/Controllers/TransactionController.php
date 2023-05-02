@@ -22,7 +22,7 @@ class TransactionController extends Controller
             'search' => 'nullable|string'
         ]);
         return view('transactions.index', [
-            'ingredient_transactions' => TransactionStock::with('ingredients')->filter(\request(['search']))->orderBy('transaction_date')->paginate(10)
+            'ingredient_transactions' => TransactionStock::with('detail')->filter(\request(['search']))->orderBy('transaction_date')->paginate(10)
         ]);
     }
 
@@ -45,7 +45,7 @@ class TransactionController extends Controller
     {
         return view('transactions.edit', [
             'ingredients' => Ingredient::with('type')->get(),
-            'ingredient_transactions' => TransactionStock::with('ingredients')->find($id),
+            'ingredient_transactions' => TransactionStock::with('detail')->find($id),
         ]);
     }
 
@@ -86,6 +86,7 @@ class TransactionController extends Controller
                         'ingredient_id' => $transIngredient->ingredient->id,
                         'prev_stock' => $transIngredient->ingredient->stock,
                         'stock_type_id' => $transIngredient->ingredient->type->id,
+                        'transaction_stock_ingredient_id' => $transIngredient->id
                     ];
                     if ($request->type === 'in') {
                         $transIngredient->ingredient->increment('stock', $stock);
@@ -112,7 +113,7 @@ class TransactionController extends Controller
     {
         try {
             DB::beginTransaction();
-            foreach ($transaction->ingredients as $ingredientTransaction) {
+            foreach ($transaction->detail as $ingredientTransaction) {
                 $history = [
                     'ingredient_id' => $ingredientTransaction->ingredient_id,
                     'prev_stock' => $ingredientTransaction->ingredient->stock,
@@ -152,6 +153,7 @@ class TransactionController extends Controller
             'ingredient_id' => $ingredient->id,
             'prev_stock' => $transaction->ingredient->stock,
             'stock_type_id' => $transaction->ingredient->type->id,
+            'transaction_stock_ingredient_id' => $transaction->id
         ];
         if ($type === 'in') $ingredient->increment('stock', $transaction->qty);
         else $ingredient->decrement('stock', $transaction->qty);
@@ -166,11 +168,14 @@ class TransactionController extends Controller
             'date' => 'required|date|date_format:Y-m-d',
             'type' => 'required|in:in,out',
             'ingredient_id' => 'required|array',
-            'ingredient_id.*' => ['required', 'exists:ingredients,id', new CheckDuplicateIngredient],
+            'ingredient_id.*' => ['required', 'exists:ingredients,id'],
             'qties' => ['required', 'array'],
             'qties.*' => 'required|integer|min:0',
             'description' => 'required|string'
         ]);
+        if(count($request->ingredient_id) != count(array_unique($request->ingredient_id))) {
+            return redirect()->back()->with('failed', 'Terdapat bahan baku yang duplikat');
+        }
         try {
             DB::beginTransaction();
             $transaction = TransactionStock::create([
@@ -192,11 +197,12 @@ class TransactionController extends Controller
                     'stock_type_id' => $ingredient->type->id,
                     'transaction_stock_id' => $transaction->id
                 ];
-                TransactionStockIngredient::create($transactionIngredient);
+                $detail = TransactionStockIngredient::create($transactionIngredient);
                 $history = [
                     'ingredient_id' => $ingredient->id,
                     'prev_stock' => $ingredient->stock,
                     'stock_type_id' => $ingredient->type->id,
+                    'transaction_stock_ingredient_id' => $detail->id
                 ];
                 if ($request->type == 'out') {
                     $ingredient->decrement('stock', $request->qties[$i]);

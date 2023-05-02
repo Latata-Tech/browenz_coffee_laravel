@@ -34,7 +34,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active nav-text-color d-flex align-items-center" aria-current="page" href="{{route('sellings')}}">
-                        <span class="material-icons">point_of_sales</span>&nbsp;Penjualan
+                        <span class="material-icons">point_of_sale</span>&nbsp;Penjualan
                     </a>
                 </li>
                 <li class="mb-1 nav-item">

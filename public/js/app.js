@@ -1,4 +1,4 @@
-const baseURL = "https://a372-2404-8000-1046-90-1cba-89c4-538b-8bf8.ngrok-free.app";
+const baseURL = "https://c9dc-2404-8000-1046-90-2d13-1bf5-161b-9188.ngrok-free.app";
 
 
 window.deleteModal = function (elm, id) {
@@ -128,4 +128,20 @@ function addTransactionStock() {
             console.log(data);
         }
     })
+}
+
+function filterTransaction(e) {
+    $('#filter-transaction').empty();
+    if(e.value === "monthly") {
+        const monthNames = [ "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+            "Juli", "Agustus", "September", "Oktober", "Nopember", "Desember" ];
+        for(let i = 0; i < monthNames.length; i++) {
+            $('#filter-transaction').append(`<option value="${i+1}">${monthNames[i]}</option>`);
+        }
+    } else if(value === "yearly") {
+        let currentYear = new Date().getFullYear();
+        for(let i = currentYear; i > currentYear-5; i--) {
+            $('#filter-transaction').append(`<option value="${i}">${i}</option>`);
+        }
+    }
 }
