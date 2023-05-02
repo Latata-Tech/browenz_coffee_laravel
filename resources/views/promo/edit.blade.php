@@ -44,6 +44,7 @@
                     </div>
                 </div>
                 <div class="row">
+                    <label class="fw-bold">Batas Waktu Promo</label>
                     <div class="col-6">
                         @include('components.input', ['type' => 'date', 'name' => 'start_date', 'label' => 'Mulai Dari', 'value' => $promo->start_date])
                     </div>
