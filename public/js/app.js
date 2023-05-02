@@ -1,4 +1,4 @@
-const baseURL = "https://c9dc-2404-8000-1046-90-2d13-1bf5-161b-9188.ngrok-free.app";
+const baseURL = "https://f7c4-2404-8000-1046-90-7d7a-eb61-9209-c267.ngrok-free.app";
 
 
 window.deleteModal = function (elm, id) {
@@ -130,6 +130,37 @@ function addTransactionStock() {
     })
 }
 
+function typeFilter(e) {
+    if(e.value === 'daily') {
+        $('#daily').removeClass('d-none');
+        if(!$('#monthly').hasClass('d-none') || !$('#yearly').hasClass('d-none')) {
+            $('#monthly').addClass('d-none');
+            $('#yearly').addClass('d-none');
+        }
+    } else if(e.value === 'monthly') {
+        $('#monthly').removeClass('d-none');
+        $('#monthly-yearly').removeClass('d-none');
+        $('#yearly').removeClass('d-none');
+        if(!$('#daily').hasClass('d-none')) {
+            $('#daily').addClass('d-none');
+        }
+    } else if(e.value === 'yearly') {
+        $('#yearly').removeClass('d-none');
+        $('#monthly-yearly').removeClass('d-none');
+        if(!$('#daily').hasClass('d-none') || !$('#monthly').hasClass('d-none')) {
+            $('#daily').addClass('d-none');
+            $('#monthly').addClass('d-none');
+        }
+    }
+}
+function typeReport(e) {
+    if(e.value === 'stock_transaction') {
+        $('#typeTransaction').removeClass('d-none');
+    } else {
+        $('#typeTransaction').addClass('d-none');
+    }
+    document.getElementById('getReport').action = `${baseURL}/reports/${e.value === 'stock_transaction' ? 'ingredient-report' : 'selling-report'}`
+}
 function filterTransaction(e) {
     $('#filter-transaction').empty();
     if(e.value === "monthly") {

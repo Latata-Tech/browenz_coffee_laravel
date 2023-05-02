@@ -1,41 +1,40 @@
 <table>
     <tr>
-        <td colspan="7" rowspan="2" style="text-align: center; vertical-align: center;">LAPORAN TRANSAKSI {{$type === "in" ? "Masuk" : "Keluar"}} BAHAN BAKU {{$time}}</td>
+        <td colspan="7" rowspan="1" style="text-align: center; vertical-align: center;">LAPORAN TRANSAKSI {{$type === "in" ? "MASUK" : "KELUAR"}} BAHAN BAKU {{$time}}</td>
     </tr>
     <tr>
     </tr>
     <thead>
     <tr>
         <th>No</th>
+        <th>Kode Transaksi</th>
         <th>Nama</th>
         <th>Satuan</th>
-        <th>Stok Sebelum</th>
         <th>Keluar</th>
         <th>Stok Sekarang</th>
     </tr>
     </thead>
     <tbody>
-    @foreach($transactions as $index => $transaction)
-        @foreach($transaction->detail as $pos => $detail)
-            @if($pos === 0)
+    @foreach($data as $index => $value)
+        @foreach($value[array_keys($value)[0]] as $key => $detail)
+            @if($key === 0)
                 <tr>
-                    <td rowspan="{{$transaction->detail->count()}}">{{$index+1}}</td>
-                    <td rowspan="{{$transaction->detail->count()}}">{{$transaction->code}}</td>
-                    <td>{{$detail->ingredient->name}}</td>
-                    <td>{{$detail->ingredient->type->name}}</td>
-                    @if($typeFilter === "daily")
-                        <td>{{$detail->ingredient->history->whereBetween(\Illuminate\Support\Facades\DB::raw(), $start_date)}}</td>
-                    @elseif($typeFilter === "monthly")
-                    @elseif($typeFilter === "yearly")
+                    <td rowspan="{{count($value[array_keys($value)[0]])}}" style="vertical-align: top">{{$index+1}}</td>
+                    <td rowspan="{{count($value[array_keys($value)[0]])}}" style="vertical-align: top">{{array_keys($value)[0]}}</td>
+                    <td>{{$detail['name']}}</td>
+                    <td>{{$detail['type']}}</td>
+                    <td>{{$detail[$type]}}</td>
+                    <td>{{$detail['current']}}</td>
                 </tr>
             @else
+                <tr>
+                    <td>{{$detail['name']}}</td>
+                    <td>{{$detail['type']}}</td>
+                    <td>{{$detail[$type]}}</td>
+                    <td>{{$detail['current']}}</td>
+                </tr>
             @endif
-
         @endforeach
-
     @endforeach
-    <tr>
-        <td></td>
-    </tr>
     </tbody>
 </table>

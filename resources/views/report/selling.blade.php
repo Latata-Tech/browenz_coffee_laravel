@@ -1,6 +1,6 @@
 <table>
     <tr>
-        <th colspan="6" rowspan="2" style="text-align: center; vertical-align: center">LAPORAN PENJUALAN {{$tipe ?? ""}}</th>
+        <th colspan="6" rowspan="2" style="text-align: center; vertical-align: center">LAPORAN PENJUALAN {{$time ?? ""}}</th>
     </tr>
     <tr></tr>
     <thead>

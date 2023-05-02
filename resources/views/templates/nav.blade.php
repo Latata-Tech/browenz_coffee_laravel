@@ -77,7 +77,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-text-color d-flex align-items-center" href="#">
+                    <a class="nav-link nav-text-color d-flex align-items-center" href="{{route('reports')}}">
                         <span class="material-icons">insert_chart</span>&nbsp;
                         Laporan
                     </a>

@@ -94,8 +94,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/{order}', [SellingController::class, 'detail'])->name('detailSelling');
     });
     Route::prefix('reports')->group(function () {
-//       Route::get('/selling-report', [ReportController::class, 'export'])->name('sellingExport');
-       Route::get('/ingredient-report', [ReportController::class, 'ingredientExport'])->name('ingredientExport');
+        Route::get('/', [ReportController::class, 'index'])->name('reports');
+        Route::get('/selling-report', [ReportController::class, 'export'])->name('sellingExport');
+        Route::get('/ingredient-report', [ReportController::class, 'ingredientExport'])->name('ingredientExport');
     });
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
