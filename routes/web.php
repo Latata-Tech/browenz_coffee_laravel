@@ -26,6 +26,10 @@ Route::get('/', [AuthController::class, 'index'])->name('index');
 Route::prefix('auth')->group(function(){
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgotPassword');
+    Route::post('/forgot-password', [AuthController::class, 'storeForgotPassword'])->name('storeForgotPassword');
+    Route::get('/reset-password', [AuthController::class, 'resetPassword'])->name('resetPassword');
+    Route::put('/reset-password', [AuthController::class, 'storeResetPassword'])->name('storeResetPassword');
 });
 Route::middleware('auth')->group(function () {
     Route::prefix('employees')->group(function () {
