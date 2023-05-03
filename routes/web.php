@@ -30,6 +30,8 @@ Route::prefix('auth')->group(function(){
     Route::post('/forgot-password', [AuthController::class, 'storeForgotPassword'])->name('storeForgotPassword');
     Route::get('/reset-password', [AuthController::class, 'resetPassword'])->name('resetPassword');
     Route::put('/reset-password', [AuthController::class, 'storeResetPassword'])->name('storeResetPassword');
+    Route::get('/change-password', [AuthController::class, 'changePassword'])->name('changePassword');
+    Route::put('/change-password', [AuthController::class, 'storeChangePassword'])->name('storeChangePassword');
 });
 Route::middleware('auth')->group(function () {
     Route::prefix('employees')->group(function () {

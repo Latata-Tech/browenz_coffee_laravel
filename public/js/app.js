@@ -130,6 +130,10 @@ function addTransactionStock() {
     })
 }
 
+function trigerLogout() {
+    $('#btnLogout').click();
+}
+
 function typeFilter(e) {
     if(e.value === 'daily') {
         $('#daily').removeClass('d-none');

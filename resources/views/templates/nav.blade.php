@@ -9,18 +9,18 @@
                     {{auth()->user()->name}}
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><a class="dropdown-item" href="#">
-                            <form action="{{ route('logout') }}" method="POST">
-                                @method('POST')
-                                @csrf
-                                <button type="submit" class="btn btn-logout stretched-link">Logout</button>
-                            </form>
-                        </a></li>
+                    <li><a class="dropdown-item" href="{{route('changePassword')}}">Ubah Password</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="trigerLogout()">Logout</a></li>
+
                 </ul>
             </div>
         </div>
     </nav>
+    <form action="{{ route('logout') }}" method="POST">
+        @method('POST')
+        @csrf
+        <button type="submit" class="btn btn-logout stretched-link dropdown-item d-none" id="btnLogout">Logout</button>
+    </form>
 </div>
 <div class="row">
     <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse bg-dark vh-100">

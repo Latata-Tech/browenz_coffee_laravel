@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Illuminate\Testing\Fluent\Concerns\Has;
 
 class AuthController extends Controller
 {
@@ -75,6 +76,26 @@ class AuthController extends Controller
             return redirect()->back()->with('success', 'Password berhasil diubah');
         }
         return redirect()->back()->with('failed', 'Reset password gagal!');
+    }
+
+    public function changePassword() {
+        return view('auth.change-password');
+    }
+
+    public function storeChangePassword(Request $request) {
+        $request->validate([
+            'old_password' => 'required|string',
+            'new_password' => 'required|string'
+        ]);
+        $user = \auth()->user();
+
+        if(Hash::check($request->old_password, $user->password)) {
+            $user->update([
+                'password' => Hash::make($request->new_password),
+            ]);
+            return redirect()->back()->with('success', 'Berhasil ubah password');
+        }
+        return redirect()->back()->with('failed', 'Gagal ubah password');
     }
 
 
