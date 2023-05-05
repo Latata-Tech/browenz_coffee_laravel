@@ -40,7 +40,7 @@
                         <td>{{'Rp. ' . number_format($order->total)}}</td>
                         <td>{{$order->user->name}}</td>
                         <td>
-                            <a href="{{route('detailSelling', ['order' => $order->id])}}"
+                            <a href="{{route('detailSelling', ['id' => $order->id])}}"
                                class="btn btn-sm btn-link"><i class="material-icons text-primary">preview</i></a>
                         </td>
                     </tr>

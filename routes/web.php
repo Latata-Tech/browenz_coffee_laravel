@@ -97,7 +97,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::prefix('sellings')->group(function () {
         Route::get('/', [SellingController::class, 'index'])->name('sellings');
-        Route::get('/{order}', [SellingController::class, 'detail'])->name('detailSelling');
+        Route::get('/detail/{id}', [SellingController::class, 'detail'])->name('detailSelling');
     });
     Route::prefix('reports')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('reports');

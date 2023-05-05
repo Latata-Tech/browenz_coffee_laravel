@@ -14,4 +14,8 @@ class OrderDetail extends Model
     public function menu() {
         return $this->belongsTo(Menu::class, 'menu_id', 'id');
     }
+
+    public function promo() {
+        return $this->belongsTo(MenuPromo::class, 'menu_promo_id', 'id');
+    }
 }
