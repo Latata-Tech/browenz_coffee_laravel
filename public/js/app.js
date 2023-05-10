@@ -36,6 +36,10 @@ $('#searchData').on('search', function (evt) {
     $('#formSearch').submit();
 })
 
+$('#date_filter').on('change', function () {
+    $('#form_date_filter').submit()
+})
+
 $('#photo').on('change', function (evt) {
     const [file] = document.getElementById('photo').files
     if(file) {

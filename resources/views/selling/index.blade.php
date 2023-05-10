@@ -7,12 +7,20 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid my-3 border border-black d-flex align-items-center" style="border-bottom: 1px solid #333 !important;">
+    <div class="container-fluid my-3 border border-black d-flex align-items-center"
+         style="border-bottom: 1px solid #333 !important;">
         <h4>Penjualan</h4>
     </div>
     <div class="row">
         <div class="col-6 justify-content-center">
             <h4>Daftar Penjualan</h4>
+        </div>
+        <div class="col-4"></div>
+        <div class="col-2">
+            <form action="{{route('sellings')}}" id="form_date_filter" method="GET">
+                @csrf
+                <input type="date" class="form-control" name="date_filter" id="date_filter" value="{{$date_filter}}">
+            </form>
         </div>
     </div>
     <div class="card w-100">
