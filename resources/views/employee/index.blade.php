@@ -76,7 +76,7 @@
                                    data-bs-toggle="modal" data-bs-target="#karyawanModal">
                                     <i class="material-icons text-danger">delete</i>
                                 </a>
-                                @if($employees->role_id === 2)
+                                @if($employee->role_id === 2)
                                     <a href="{{route('updateAccount', ['employee' => $employee->id])}}"
                                        class="btn btn-sm btn-warning">Update Akun</a>
                                 @endif
