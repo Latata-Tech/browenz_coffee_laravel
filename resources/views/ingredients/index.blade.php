@@ -10,7 +10,6 @@
     <div class="container-fluid my-3 border border-black d-flex align-items-center" style="border-bottom: 1px solid #333 !important;">
         <h4>Bahan Baku</h4>
     </div>
-    @include('components.success')
     <div class="row mb-2">
         <div class="col-6 justify-content-center">
             <h4>Daftar Bahan Baku</h4>

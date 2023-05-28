@@ -23,7 +23,7 @@
                 @include('components.textarea', ['type' => 'text', 'name' => 'description', 'label' => 'Deksripsi', 'value' => $ingredient->description])
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Ubah</button>
+        <button type="submit" class="btn btn-primary">Simpan</button>
     </form>
 @endsection
 

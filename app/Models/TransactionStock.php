@@ -12,10 +12,22 @@ class TransactionStock extends Model
     protected $guarded = ['id'];
 
     public function scopeFilter($query, $filter) {
-        return $query->when($filter['search'] ?? false, function ($query, $filter) {
-           return $query->where('code', 'like', '%' . $filter .'%')
+        if(isset($filter['type'])) {
+            if($filter['type'] == 'monthly') {
+                $query->when($filter['filter'] ?? false, function ($query, $filter) {
+                    return $query->whereMonth('created_at', $filter);
+                });
+            } else {
+                $query->when($filter['filter'] ?? false, function ($query, $filter) {
+                    return $query->whereYear('created_at', $filter);
+                });
+            }
+        }
+        $query->when($filter['search'] ?? false, function ($query, $filter) {
+           return $query->whereRaw('LOWER(code) LIKE ?', ['%' . $filter .'%'])
                ->orWhere('transaction_date', 'like', '%' . $filter . '%');
         });
+        return $query;
     }
 
     public function detail() {

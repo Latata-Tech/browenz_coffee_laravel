@@ -26,8 +26,8 @@ class CreateMenuRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'category_id' => 'required|integer|exists:categories,id',
-            'hot_price' => 'nullable|string|min:0',
-            'ice_price' => 'nullable|string|min:0',
+            'hot_price' => 'required_if:ice_price,null|string|min:0',
+            'ice_price' => 'required_if:hot_price,null|string|min:0',
             'ingredient_id' => 'required|array',
             'ingredient_id.*' => 'exists:ingredients,id',
             'photo' => 'required|image',

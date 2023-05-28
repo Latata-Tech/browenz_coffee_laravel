@@ -11,7 +11,7 @@ class PromoController extends Controller
 {
     public function index() {
         return view('promo.index', [
-            'promos' => MenuPromo::all()
+            'promos' => MenuPromo::filter(\request(['search']))->paginate(10)
         ]);
     }
 

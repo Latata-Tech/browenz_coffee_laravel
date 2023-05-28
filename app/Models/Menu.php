@@ -31,7 +31,7 @@ class Menu extends Model
 
     public function scopeFilter($query, $filter) {
         $query->when($filter['search'] ?? false, function($query, $filter) {
-           return $query->whereRaw("LOWER(name) LIKE ?", ['%'.$filter.'%'])
+           return $query->whereRaw("LOWER(name) LIKE ?", ['%'.strtolower($filter).'%'])
                ->orWhereRelation('category', 'name', 'like', '%'.$filter.'%');
         });
 

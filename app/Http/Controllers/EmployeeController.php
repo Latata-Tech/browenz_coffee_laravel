@@ -40,7 +40,7 @@ class EmployeeController extends Controller
 
     public function updateAccount(User $employee) {
         return view('employee.update_account', [
-            'roles' => Role::select(['id','name'])->get(),
+            'roles' => Role::select(['id','name'])->where('name', 'staff')->get(),
             'employee' => $employee
         ]);
     }

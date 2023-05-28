@@ -14,7 +14,7 @@ class Category extends Model
 
     public function scopeFilter($query, $filter) {
         $query->when($filter['search'] ?? false, fn($query, $filter) =>
-            $query->where('name', 'like', '%'.$filter.'%')
+            $query->whereRaw('LOWER(name) LIKE ? ', ['%'.strtolower($filter).'%'])
         );
     }
 }

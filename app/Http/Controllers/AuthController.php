@@ -47,6 +47,7 @@ class AuthController extends Controller
             Mail::to($user->email)->queue(new ForgotPassword($user->email, $token));
             return redirect()->back()->with('success', 'Silahkan cek email untuk reset password');
         }
+        return redirect()->back();
     }
 
     public function resetPassword(Request $request) {

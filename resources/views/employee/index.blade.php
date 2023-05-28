@@ -46,12 +46,7 @@
                         @endif
                         <td>{{$employee->name}}</td>
                         <td>{{$employee->status ? "Aktif" : "Tidak aktif"}}</td>
-                        @if($employee->role_id === 1)
-                            <td>
-                                <a href="{{route('detailEmployee', ['employee' => $employee->id])}}"
-                                   class="btn btn-sm btn-link"><i class="material-icons text-primary">preview</i></a>
-                            </td>
-                        @elseif(is_null($employee->email))
+                        @if(is_null($employee->email))
                             <td>
                                 <a href="{{route('detailEmployee', ['employee' => $employee->id])}}"
                                    class="btn btn-sm btn-link"><i class="material-icons text-primary">preview</i></a>
@@ -65,10 +60,8 @@
                                    data-bs-toggle="modal" data-bs-target="#karyawanModal">
                                     <i class="material-icons text-danger">delete</i>
                                 </a>
-                                @if(auth()->user()->role_id === 1)
-                                    <a href="{{route('createAccount', ['employee' => $employee->id])}}"
-                                       class="btn btn-sm btn-primary">Buat Akun</a>
-                                @endif
+                                <a href="{{route('createAccount', ['employee' => $employee->id])}}"
+                                   class="btn btn-sm btn-primary">Buat Akun</a>
                             </td>
                         @else
                             <td>
@@ -83,7 +76,7 @@
                                    data-bs-toggle="modal" data-bs-target="#karyawanModal">
                                     <i class="material-icons text-danger">delete</i>
                                 </a>
-                                @if(auth()->user()->role_id === 1)
+                                @if($employees->role_id === 2)
                                     <a href="{{route('updateAccount', ['employee' => $employee->id])}}"
                                        class="btn btn-sm btn-warning">Update Akun</a>
                                 @endif

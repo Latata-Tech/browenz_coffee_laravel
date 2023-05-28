@@ -16,6 +16,6 @@ class Ingredient extends Model
     }
 
     public function scopeFilter($query,  $fitler) {
-        $query->when($fitler['search'] ?? false, fn($query, $search) => $query->where('name', 'like', '%' . $search . '%'));
+        $query->when($fitler['search'] ?? false, fn($query, $search) => $query->whereRaw('LOWER(name) LIKE ?', ['%' . $search . '%']));
     }
 }

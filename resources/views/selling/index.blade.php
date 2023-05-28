@@ -20,48 +20,59 @@
             <form action="{{route('sellings')}}" id="form_date_filter" method="GET">
                 @csrf
                 <input type="date" class="form-control" name="date_filter" id="date_filter" value="{{$date_filter}}">
-            </form>
         </div>
     </div>
     <div class="card w-100">
         <div class="card-body">
             <div class="row">
                 <div class="col-4">
-                    @include('components.search', ['action' => route('sellings')])
+                    <div class="row justify-content-end">
+                        <div class="col-12">
+                            <div class="input-group mb-3">
+                                <div id="button-search">
+                                    <i class="material-icons">search</i>
+                                </div>
+                                <input type="search" id="searchData" name="search"
+                                       class="form-control border-start-0 border-secondary" onkeyup="search()"
+                                       placeholder="Search..." aria-describedby="button-search"
+                                       value="{{request('search') ?? ""}}">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>No</th>
-                    <th>No Penjualan</th>
-                    <th>Total Penjualan</th>
-                    <th>Karyawan</th>
-                    <th>Aksi</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($orders as $index => $order)
+                <table class="table">
+                    <thead>
                     <tr>
-                        <td>{{$index+1}}</td>
-                        <td>{{$order->code}}</td>
-                        <td>{{'Rp. ' . number_format($order->total)}}</td>
-                        <td>{{$order->user->name}}</td>
-                        <td>
-                            <a href="{{route('detailSelling', ['id' => $order->id])}}"
-                               class="btn btn-sm btn-link"><i class="material-icons text-primary">preview</i></a>
-                        </td>
+                        <th>No</th>
+                        <th>No Penjualan</th>
+                        <th>Total Penjualan</th>
+                        <th>Karyawan</th>
+                        <th>Aksi</th>
                     </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
-        @if($orders->count() >= 10)
-            <div class="card-footer">
-                {{$orders->links('vendor.pagination.bootstrap-5')}}
+                    </thead>
+                    <tbody>
+                    @foreach($orders as $index => $order)
+                        <tr>
+                            <td>{{$index+1}}</td>
+                            <td>{{$order->code}}</td>
+                            <td>{{'Rp. ' . number_format($order->total)}}</td>
+                            <td>{{$order->user->name}}</td>
+                            <td>
+                                <a href="{{route('detailSelling', ['id' => $order->id])}}"
+                                   class="btn btn-sm btn-link"><i class="material-icons text-primary">preview</i></a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
-        @endif
-    </div>
+            @if($orders->count() >= 10)
+                <div class="card-footer">
+                    {{$orders->links('vendor.pagination.bootstrap-5')}}
+                </div>
+            @endif
+        </div>
 @endsection
 
 @section('footer')

@@ -12,7 +12,8 @@
     </div>
     @include('components.success')
     @include('components.error-custom', ['errorName' => 'failed'])
-    <form action="" method="GET" id="getReport">
+    @include('components.error')
+    <form action="{{route('sellingExport')}}" method="GET" id="getReport">
         @csrf
         @method('GET')
         <div class="row">
@@ -62,7 +63,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label fw-bold">Tipe Laporan</label>
-                    <select class="form-control" id="type-report" onchange="typeReport(this)">
+                    <select class="form-control" name="type_report" id="type-report" onchange="typeReport(this)">
                         <option value="-">Pilih Laporan</option>
                         <option value="selling">Laporan Penjualan</option>
                         <option value="stock_transaction">Laporan Transaksi Stock</option>

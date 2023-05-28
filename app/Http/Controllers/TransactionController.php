@@ -19,10 +19,12 @@ class TransactionController extends Controller
     public function index(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $request->validate([
-            'search' => 'nullable|string'
+            'search' => 'nullable|string',
+            'type' => 'nullable|string',
+            'filter' => 'nullable|string'
         ]);
         return view('transactions.index', [
-            'ingredient_transactions' => TransactionStock::with('detail')->filter(\request(['search']))->orderBy('transaction_date')->paginate(10)
+            'ingredient_transactions' => TransactionStock::with('detail')->filter(\request(['search', 'type', 'filter']))->orderBy('transaction_date')->paginate(10)
         ]);
     }
 

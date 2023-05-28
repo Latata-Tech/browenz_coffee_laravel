@@ -1,4 +1,4 @@
-const baseURL = "https://f7c4-2404-8000-1046-90-7d7a-eb61-9209-c267.ngrok-free.app";
+const baseURL = "https://api.browenzpos.me/";
 
 
 window.deleteModal = function (elm, id) {
@@ -38,6 +38,10 @@ $('#searchData').on('search', function (evt) {
 
 $('#date_filter').on('change', function () {
     $('#form_date_filter').submit()
+})
+
+$('#filter-transaction').on('change', function () {
+    $('#filter-transaction-form').submit();
 })
 
 $('#photo').on('change', function (evt) {
@@ -177,7 +181,7 @@ function filterTransaction(e) {
         for(let i = 0; i < monthNames.length; i++) {
             $('#filter-transaction').append(`<option value="${i+1}">${monthNames[i]}</option>`);
         }
-    } else if(value === "yearly") {
+    } else if(e.value === "yearly") {
         let currentYear = new Date().getFullYear();
         for(let i = currentYear; i > currentYear-5; i--) {
             $('#filter-transaction').append(`<option value="${i}">${i}</option>`);
