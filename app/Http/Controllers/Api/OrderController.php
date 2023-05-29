@@ -56,7 +56,8 @@ class OrderController extends Controller
                 'detail' => $orderItems,
                 'total' => $data['total'],
                 'cashier' => $data['user']['name'],
-                'orderDate' => Carbon::createFromDate($data['created_at'])->format('d-m-Y H:i')
+                'orderDate' => Carbon::createFromDate($data['created_at'])->format('d-m-Y H:i'),
+                'discount' => $data['discount']
             ];
         }
         return response()->json([
@@ -105,7 +106,8 @@ class OrderController extends Controller
                 'detail' => $orderItems,
                 'total' => $data['total'],
                 'cashier' => $data['user']['name'],
-                'orderDate' => Carbon::createFromDate($data['created_at'])->format('d-m-Y H:i')
+                'orderDate' => Carbon::createFromDate($data['created_at'])->format('d-m-Y H:i'),
+                'discount' => $data['discount']
             ];
         }
         return response()->json([
