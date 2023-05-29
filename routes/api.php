@@ -39,6 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
        Route::get('/', [OrderController::class, 'getOrders']);
        Route::get('/total-today', [OrderController::class, 'getTotalOrder']);
        Route::get('/total', [OrderController::class, 'getTotalOrder']);
+       Route::get('/{orderId}', [OrderController::class, 'detailOrder']);
    });
    Route::prefix('categories')->group(function () {
        Route::get('/', [CategoryController::class, 'findAll']);

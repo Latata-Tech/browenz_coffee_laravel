@@ -9,6 +9,7 @@ use App\Models\Menu;
 use App\Models\MenuPromo;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -176,5 +177,30 @@ class OrderController extends Controller
                 'message' => 'Terjadi kesalahan pada server'
             ], 500);
         }
+    }
+
+    public function detailOrder(string $code) {
+        $orderItems = [];
+        $datas = Order::with('detail', 'detail.menu', 'user')->where('code', $code)->first()->toArray();
+        foreach ($datas['detail'] as $detail) {
+            $item = [
+                'total' => $detail['total'],
+                'qty' => $detail['qty'],
+                'name' => $detail['menu']['name'],
+                'variant' => $detail['variant'],
+            ];
+            $orderItems[] = $item;
+        }
+        $pdf = Pdf::loadView('pdf.invoice', [
+            'code' => $datas['code'],
+            'payment_type' => $datas['payment_type'],
+            'detail' => $orderItems,
+            'total' => $datas['total'],
+            'cashier' => $datas['user']['name'],
+            'orderDate' => Carbon::createFromDate($datas['created_at'])->format('d-m-Y'),
+            'orderHour' => Carbon::createFromDate($datas['created_at'])->format('H:i'),
+            'discount' => $datas['discount']
+        ])->setPaper([0,0,360,460], 'potrait');
+        return $pdf->download('invoice-'.$datas['code'].'.pdf');
     }
 }
