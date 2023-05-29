@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\DashboardController;
 
 Route::prefix('auth')->group(function () {
    Route::post('/', [AuthController::class, 'login']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
