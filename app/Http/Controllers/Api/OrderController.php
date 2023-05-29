@@ -201,6 +201,6 @@ class OrderController extends Controller
             'orderHour' => Carbon::createFromDate($datas['created_at'])->format('H:i'),
             'discount' => $datas['discount']
         ])->setPaper([0,0,360,460], 'potrait');
-        return $pdf->stream();
+        return $pdf->download('invoice-'.$datas['code'].'.pdf');
     }
 }
