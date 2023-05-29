@@ -130,6 +130,7 @@ class OrderController extends Controller
                 $menu = Menu::find($orderMenu['id']);
                 $detail = [
                     'order_id' => null,
+                    'menu_promo_id' => null,
                     'menu_id' => $orderMenu['id'],
                     'variant' => $orderMenu['variant'],
                     'qty' => $orderMenu['qty'],
