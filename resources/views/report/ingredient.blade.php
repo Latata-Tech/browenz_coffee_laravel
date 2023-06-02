@@ -23,15 +23,15 @@
                     <td rowspan="{{count($value->detail)}}" style="vertical-align: top">{{$value->code}}</td>
                     <td>{{$detail->ingredient->name}}</td>
                     <td>{{$detail->ingredient->type->name}}</td>
-                    <td>{{$detail->histories->reverse()->first()->prev_stock}}</td>
                     <td>{{$detail->qty}}</td>
+                    <td>{{$detail->histories->where('transaction_stock_ingredient_id', $value->id)->first()->stock}}</td>
                 </tr>
             @else
                 <tr>
                     <td>{{$detail->ingredient->name}}</td>
                     <td>{{$detail->ingredient->type->name}}</td>
-                    <td>{{$detail->histories->reverse()->first()->prev_stock}}</td>
                     <td>{{$detail->qty}}</td>
+                    <td>{{$detail->histories->where('transaction_stock_ingredient_id', $value->id)->first()->stock}}</td>
                 </tr>
             @endif
         @endforeach
