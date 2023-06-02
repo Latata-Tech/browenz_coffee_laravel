@@ -24,14 +24,14 @@
                     <td>{{$detail->ingredient->name}}</td>
                     <td>{{$detail->ingredient->type->name}}</td>
                     <td>{{$detail->qty}}</td>
-                    <td>{{$detail->histories->where('transaction_stock_ingredient_id', $value->id)->first()->stock}}</td>
+                    <td>{{$detail->histories->first()->stock}}</td>
                 </tr>
             @else
                 <tr>
                     <td>{{$detail->ingredient->name}}</td>
                     <td>{{$detail->ingredient->type->name}}</td>
                     <td>{{$detail->qty}}</td>
-                    <td>{{$detail->histories->where('transaction_stock_ingredient_id', $value->id)->first()->stock}}</td>
+                    <td>{{$detail->histories->first()->stock}}</td>
                 </tr>
             @endif
         @endforeach
