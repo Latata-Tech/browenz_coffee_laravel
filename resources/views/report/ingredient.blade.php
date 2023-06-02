@@ -23,14 +23,14 @@
                     <td rowspan="{{count($value->detail)}}" style="vertical-align: top">{{$value->code}}</td>
                     <td>{{$detail->name}}</td>
                     <td>{{$detail->ingredient->type->name}}</td>
-                    <td>{{$detail->histories->orderBy('created_at', 'desc')->first()->prev_stock}}</td>
+                    <td>{{$detail->histories->reverse()->first()->prev_stock}}</td>
                     <td>{{$detail->qty}}</td>
                 </tr>
             @else
                 <tr>
                     <td>{{$detail->name}}</td>
                     <td>{{$detail->ingredient->type->name}}</td>
-                    <td>{{$detail->histories->orderBy('created_at', 'desc')->first()->prev_stock}}</td>
+                    <td>{{$detail->histories->reverse()->first()->prev_stock}}</td>
                     <td>{{$detail->qty}}</td>
                 </tr>
             @endif
