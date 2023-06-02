@@ -28,12 +28,8 @@ class EmployeeController extends Controller
     }
 
     public function createAccount(User $employee) {
-        $roles = Role::select(['id', 'name']);
-        if (auth()->user()->role_id === 1) {
-            $roles = $roles->where('name', 'staff');
-        }
         return view('employee.create_account', [
-            'roles' => $roles->get(),
+            'roles' =>  Role::select(['id', 'name'])->where('name', 'staff')->get(),
             'employee' => $employee
         ]);
     }
