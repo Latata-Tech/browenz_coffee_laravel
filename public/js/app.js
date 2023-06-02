@@ -1,4 +1,4 @@
-const baseURL = "https://api.browenzpos.me/";
+const baseURL = "https://api.browenzpos.me";
 
 
 window.deleteModal = function (elm, id) {
