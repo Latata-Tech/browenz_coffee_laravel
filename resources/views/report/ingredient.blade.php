@@ -16,7 +16,7 @@
     </thead>
     <tbody>
     @foreach($data as $index => $value)
-        @dd($value, array_keys($value)[0])
+        @dd($value)
         @foreach($value[array_keys($value)[0]] as $key => $detail)
             @if($key === 0)
                 <tr>
