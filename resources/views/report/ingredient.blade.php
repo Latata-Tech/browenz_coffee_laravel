@@ -15,24 +15,23 @@
     </tr>
     </thead>
     <tbody>
-    @dd($data)
     @foreach($data as $index => $value)
-        @foreach($value[array_keys($value)[0]] as $key => $detail)
+        @foreach($value->detail as $key => $detail)
             @if($key === 0)
                 <tr>
-                    <td rowspan="{{count($value[array_keys($value)[0]])}}" style="vertical-align: top">{{$index+1}}</td>
-                    <td rowspan="{{count($value[array_keys($value)[0]])}}" style="vertical-align: top">{{array_keys($value)[0]}}</td>
-                    <td>{{$detail['name']}}</td>
-                    <td>{{$detail['type']}}</td>
-                    <td>{{$detail[$type]}}</td>
-                    <td>{{$detail['current']}}</td>
+                    <td rowspan="{{count($value->detail)}}" style="vertical-align: top">{{$index+1}}</td>
+                    <td rowspan="{{count($value->detail)}}" style="vertical-align: top">{{$value->code}}</td>
+                    <td>{{$detail->name}}</td>
+                    <td>{{$detail->ingredient->type->name}}</td>
+                    <td>{{$detail->histories->latest()->first()->prev_stock}}</td>
+                    <td>{{$detail->ingredient->qty}}</td>
                 </tr>
             @else
                 <tr>
-                    <td>{{$detail['name']}}</td>
-                    <td>{{$detail['type']}}</td>
-                    <td>{{$detail[$type]}}</td>
-                    <td>{{$detail['current']}}</td>
+                    <td>{{$detail->name}}</td>
+                    <td>{{$detail->ingredient->type->name}}</td>
+                    <td>{{$detail->histories->latest()->first()->prev_stock}}</td>
+                    <td>{{$detail->ingredient->qty}}</td>
                 </tr>
             @endif
         @endforeach
