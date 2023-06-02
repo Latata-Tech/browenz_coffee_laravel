@@ -24,14 +24,14 @@
                     <td>{{$detail->name}}</td>
                     <td>{{$detail->ingredient->type->name}}</td>
                     <td>{{$detail->histories->latest()->first()->prev_stock}}</td>
-                    <td>{{$detail->ingredient->qty}}</td>
+                    <td>{{$detail->qty}}</td>
                 </tr>
             @else
                 <tr>
                     <td>{{$detail->name}}</td>
                     <td>{{$detail->ingredient->type->name}}</td>
                     <td>{{$detail->histories->latest()->first()->prev_stock}}</td>
-                    <td>{{$detail->ingredient->qty}}</td>
+                    <td>{{$detail->qty}}</td>
                 </tr>
             @endif
         @endforeach
