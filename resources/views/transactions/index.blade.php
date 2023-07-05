@@ -66,7 +66,7 @@
                     <tr>
                         <td>{{$index+1}}</td>
                         <td>{{$transaction->code}}</td>
-                        <td>{{\Illuminate\Support\Carbon::createFromDate($transaction->date)->format('d/m/Y')}}</td>
+                        <td>{{\Illuminate\Support\Carbon::createFromDate($transaction->transaction_date)->format('d/m/Y')}}</td>
                         <td>{{$transaction->type === 'in' ? 'Masuk' : 'Keluar'}}</td>
                         <td>
                             <a href="{{route('editTransaction', ['id' => $transaction->id])}}"
