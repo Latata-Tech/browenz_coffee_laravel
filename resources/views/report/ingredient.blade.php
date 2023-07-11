@@ -10,7 +10,7 @@
         <th>Kode Transaksi</th>
         <th>Nama</th>
         <th>Satuan</th>
-        <th>{{$type === "in" ? "MASUK" : "KELUAR"}}</th>
+        <th>{{$type === "in" ? "Masuk" : "Keluar"}}</th>
         <th>Stok Sekarang</th>
     </tr>
     </thead>
