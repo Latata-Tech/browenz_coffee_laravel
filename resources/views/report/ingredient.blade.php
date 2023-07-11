@@ -1,4 +1,5 @@
 <table>
+    @dump($type)
     <tr>
         <td colspan="7" rowspan="1" style="text-align: center; vertical-align: center;">LAPORAN TRANSAKSI {{$type === "in" ? "MASUK" : "KELUAR"}} BAHAN BAKU {{$time}}</td>
     </tr>
