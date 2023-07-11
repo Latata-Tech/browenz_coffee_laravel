@@ -24,6 +24,7 @@ class ReportController extends Controller
     }
 
     public function ingredientExport(ExportIngredientRequest $request) {
+        dd($request->type);
         return Excel::download(new IngredientExport($request->type, $request->transaction_type, $this->time($request)), 'stock.xlsx');
     }
 
