@@ -24,7 +24,6 @@ class IngredientExport implements FromView
 
     public function view(): View
     {
-        dd($this->type);
         $transactionTraint = $this->transactionByType($this->transactionType, TransactionStock::with(['detail', 'detail.ingredient', 'detail.histories', 'detail.ingredient.type'])->where('type', $this->type));
         return \view('report.ingredient', [
             'data' => $transactionTraint['transaction'],
