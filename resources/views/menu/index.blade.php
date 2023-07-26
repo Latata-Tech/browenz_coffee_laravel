@@ -41,7 +41,7 @@
                     <tr>
                         <td>{{$index+1}}</td>
                         <td>{{$menu->name}}</td>
-                        <td>{{$menu->category ?? $menu->category->name}}</td>
+                        <td>{{is_null($menu->category) ? null : $menu->category->name}}</td>
                         <td>
                             <a href="{{route('detailMenu', ['menu' => $menu->id])}}"
                                class="btn btn-sm btn-link"><i class="material-icons text-primary">preview</i></a>
