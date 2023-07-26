@@ -17,7 +17,9 @@ class DashboardController extends Controller
             'totalDaily' => $order->sum('total'),
             'orders' => $order->count(),
             'totalMonthly' => $totalMonth,
-            'bestSellers' => OrderDetail::with(['menuTrashed'])->select(DB::raw('sum(qty) as totalOrder, menu_id'))->groupBy('menu_id')->orderBy('totalorder', 'DESC')->get()
+            'bestSellers' => OrderDetail::with(['menu' => function(query) {
+                return $query->withTrashed();
+            }])->select(DB::raw('sum(qty) as totalOrder, menu_id'))->groupBy('menu_id')->orderBy('totalorder', 'DESC')->get()
         ]);
     }
 }
