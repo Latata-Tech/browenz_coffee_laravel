@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Log;
 class OrderController extends Controller
 {
     public function getTotalOrder(Request $request) {
-        $datas = Order::with('detail', 'detail.menu', 'user');
+        $datas = Order::with(['detail', 'detail.menu' => fn($q) => $q->withTrashed(), 'user']);
         if(!is_null($request->date)) {
             $datas = $datas->whereDate('created_at', $request->date == "" ? Carbon::now()->format('Y-m-d') : $request->date)->sum('total');
         } else {
@@ -87,7 +87,7 @@ class OrderController extends Controller
     }
     public function getOrderNotProcess() {
         $orders = [];
-        $datas = Order::with('detail', 'detail.menu', 'user')->where('status', 'process')
+        $datas = Order::with(['detail', 'detail.menu' => fn($q) => $q->withTrashed(), 'user'])->where('status', 'process')
             ->get()
             ->toArray();
         foreach ($datas as $data) {
