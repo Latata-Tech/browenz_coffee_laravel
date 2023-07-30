@@ -19,7 +19,7 @@ class MenuController extends Controller
         ]);
         $data = Menu::with('category')->filter(request(['search', 'category']))->orderBy('name')->get()->toArray();
         $menus = [];
-        foreach ($data['data'] as $menu) {
+        foreach ($data as $menu) {
             $promo = MenuPromo::where('menu_id', $menu['id'])->orderBy('created_at', 'desc')->first();
             if (!is_null($promo) && Carbon::createFromDate(Carbon::now()->format('Y-m-d'))->getTimestamp() >= Carbon::createFromDate($promo->start_date)->getTimestamp() && Carbon::createFromDate(Carbon::now()->format('Y-m-d'))->getTimestamp() <= Carbon::createFromDate($promo->end_date)->getTimestamp()) {
                 $menu['promo_hot_price'] = $promo->hot_price;
