@@ -67,11 +67,9 @@
                     </tbody>
                 </table>
             </div>
-            @if($orders->count() >= 10)
-                <div class="card-footer">
-                    {{$orders->links('vendor.pagination.bootstrap-5')}}
-                </div>
-            @endif
+            <div class="card-footer">
+                {{$orders->links('vendor.pagination.bootstrap-5')}}
+            </div>
         </div>
 @endsection
 
