@@ -38,7 +38,7 @@ class TransactionController extends Controller
     public function detail(TransactionStock $transaction): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         return view('transactions.detail', [
-            'ingredients' => Ingredient::with('type')->get(),
+            'ingredients' => Ingredient::with('type')->withTrashed()->get(),
             'ingredient_transactions' => $transaction,
         ]);
     }
