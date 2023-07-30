@@ -17,7 +17,7 @@ class MenuController extends Controller
             'search' => 'nullable|string',
             'category' => 'nullable|integer|exists:categories,id'
         ]);
-        $data = Menu::with('category')->filter(request(['search', 'category']))->orderBy('name')->toArray();
+        $data = Menu::with('category')->filter(request(['search', 'category']))->orderBy('name')->get()->toArray();
         $menus = [];
         foreach ($data['data'] as $menu) {
             $promo = MenuPromo::where('menu_id', $menu['id'])->orderBy('created_at', 'desc')->first();
