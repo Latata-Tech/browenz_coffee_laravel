@@ -60,11 +60,9 @@
                 </tbody>
             </table>
         </div>
-        @if($menus->count() >= 10)
-            <div class="card-footer">
-                {{$menus->links('vendor.pagination.bootstrap-5')}}
-            </div>
-        @endif
+        <div class="card-footer">
+            {{$menus->links('vendor.pagination.bootstrap-5')}}
+        </div>
     </div>
     @include('components.modal-delete', ['action' => 'menu'])
 @endsection
