@@ -86,11 +86,9 @@
                 </tbody>
             </table>
         </div>
-        @if($ingredient_transactions->count() >= 10)
-            <div class="card-footer">
-                {{$ingredient_transctions->links('vendor.pagination.bootstrap-5')}}
-            </div>
-        @endif
+        <div class="card-footer">
+            {{$ingredient_transactions->links('vendor.pagination.bootstrap-5')}}
+        </div>
     </div>
     @include('components.modal-delete', ['action' => 'transaction'])
 @endsection
