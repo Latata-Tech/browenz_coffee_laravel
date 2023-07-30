@@ -127,7 +127,12 @@ class OrderController extends Controller
                 $promo = MenuPromo::where('menu_id', $orderMenu['id'])->orderBy('created_at', 'desc')->first();
 
 
-                $menu = Menu::find($orderMenu['id']);
+                $menu = Menu::with(['ingredients'])->find($orderMenu['id']);
+                foreach ($menu->ingredients as $ingredient) {
+                    if($ingredient->stock <= 0) {
+                        throw new \Exception('Stock bahan baku '.$ingredient->name.' habis', 400);
+                    }
+                }
                 $detail = [
                     'order_id' => null,
                     'menu_promo_id' => null,
@@ -173,6 +178,12 @@ class OrderController extends Controller
         } catch (\Throwable $e) {
             Log::error($e);
             DB::rollBack();
+            if($e->getCode() === 400) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e->getMessage()
+                ], $e->getCode());
+            }
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Terjadi kesalahan pada server'
