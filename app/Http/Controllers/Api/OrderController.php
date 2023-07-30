@@ -33,7 +33,7 @@ class OrderController extends Controller
     }
     public function getOrders(Request $request) {
         $orders = [];
-        $datas = Order::with('detail', 'detail.menu', 'user');
+        $datas = Order::with(['detail', 'detail.menu', 'user']);
         if(!is_null($request->date)) {
             $datas = $datas->whereDate('created_at', $request->date == "" ? Carbon::now()->format('Y-m-d') : $request->date)->get()->toArray();
         } else {
