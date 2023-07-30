@@ -20,7 +20,7 @@ class SellingController extends Controller
     }
 
     public function detail($id) {
-        $order = Order::with(['detail', 'user', 'detail.promo' => fn($q) => $q->withTrashed(), 'detail.menu' => fn($q) => $q->withTrashed()])->find($id);
+        $order = Order::with(['detail', 'user' => fn($q) => $q->withTrashed(), 'detail.promo' => fn($q) => $q->withTrashed(), 'detail.menu' => fn($q) => $q->withTrashed()])->find($id);
         $codePromo = '';
         foreach ($order->detail as $detail) {
             if(!is_null($detail->menu_promo_id)) $codePromo .= $detail->promo->name . ',';

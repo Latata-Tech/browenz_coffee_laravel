@@ -21,7 +21,7 @@ class SellingExport implements FromView
     }
     public function view(): View
     {
-        $transactionTraint = $this->transactionByType($this->transactionType, Order::with(['user']));
+        $transactionTraint = $this->transactionByType($this->transactionType, Order::with(['user' => fn($q) => $q->withTrashed()]));
         return \view('report.selling', [
             'orders' => $transactionTraint['transaction'],
             'time' => $transactionTraint['time']

@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Log;
 class OrderController extends Controller
 {
     public function getTotalOrder(Request $request) {
-        $datas = Order::with(['detail', 'detail.menu' => fn($q) => $q->withTrashed(), 'user']);
+        $datas = Order::with(['detail', 'detail.menu' => fn($q) => $q->withTrashed(), 'user' => fn($q) => $q->withTrashed()]);
         if(!is_null($request->date)) {
             $datas = $datas->whereDate('created_at', $request->date == "" ? Carbon::now()->format('Y-m-d') : $request->date)->sum('total');
         } else {
@@ -33,7 +33,7 @@ class OrderController extends Controller
     }
     public function getOrders(Request $request) {
         $orders = [];
-        $datas = Order::with(['detail', 'detail.menu' => fn($q) => $q->withTrashed(), 'user']);
+        $datas = Order::with(['detail', 'detail.menu' => fn($q) => $q->withTrashed(), 'user' => fn($q) => $q->withTrashed()]);
         if(!is_null($request->date)) {
             $datas = $datas->whereDate('created_at', $request->date == "" ? Carbon::now()->format('Y-m-d') : $request->date)->get()->toArray();
         } else {
@@ -87,7 +87,7 @@ class OrderController extends Controller
     }
     public function getOrderNotProcess() {
         $orders = [];
-        $datas = Order::with(['detail', 'detail.menu' => fn($q) => $q->withTrashed(), 'user'])->where('status', 'process')
+        $datas = Order::with(['detail', 'detail.menu' => fn($q) => $q->withTrashed(), 'user' => fn($q) => $q->withTrashed()])->where('status', 'process')
             ->get()
             ->toArray();
         foreach ($datas as $data) {
@@ -193,7 +193,7 @@ class OrderController extends Controller
 
     public function detailOrder(string $code) {
         $orderItems = [];
-        $datas = Order::with(['detail', 'detail.menu' => fn($q) => $q->withTrashed(), 'user'])->where('code', $code)->first()->toArray();
+        $datas = Order::with(['detail', 'detail.menu' => fn($q) => $q->withTrashed(), 'user' => fn($q) => $q->withTrashed()])->where('code', $code)->first()->toArray();
         foreach ($datas['detail'] as $detail) {
             $item = [
                 'total' => $detail['total'],
