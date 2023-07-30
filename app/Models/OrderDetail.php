@@ -16,7 +16,7 @@ class OrderDetail extends Model
     }
 
     public function menuTrashed() {
-        return $this->belongsTo(Menu::class, 'menu_id', 'id')->withTrashed();
+        return $this->belongsTo(Menu::class, 'menu_id', 'id');
     }
 
     public function promo() {

@@ -33,7 +33,7 @@ class OrderController extends Controller
     }
     public function getOrders(Request $request) {
         $orders = [];
-        $datas = Order::with(['detail', 'detail.menu', 'user']);
+        $datas = Order::with(['detail', 'detail.menu' => fn($q) => $q->withTrashed(), 'user']);
         if(!is_null($request->date)) {
             $datas = $datas->whereDate('created_at', $request->date == "" ? Carbon::now()->format('Y-m-d') : $request->date)->get()->toArray();
         } else {
@@ -193,7 +193,7 @@ class OrderController extends Controller
 
     public function detailOrder(string $code) {
         $orderItems = [];
-        $datas = Order::with('detail', 'detail.menu', 'user')->where('code', $code)->first()->toArray();
+        $datas = Order::with(['detail', 'detail.menu' => fn($q) => $q->withTrashed(), 'user'])->where('code', $code)->first()->toArray();
         foreach ($datas['detail'] as $detail) {
             $item = [
                 'total' => $detail['total'],
