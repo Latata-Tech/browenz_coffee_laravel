@@ -129,7 +129,7 @@ class OrderController extends Controller
 
                 $menu = Menu::with(['ingredients'])->find($orderMenu['id']);
                 foreach ($menu->ingredients as $ingredient) {
-                    if($ingredient->stock <= 0) {
+                    if($ingredient->ingredient->stock <= 0) {
                         throw new \Exception('Stock bahan baku '.$ingredient->name.' habis', 400);
                     }
                 }
