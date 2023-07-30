@@ -14,7 +14,7 @@ class SellingController extends Controller
             'date_filter' => 'nullable|date|date_format:Y-m-d'
         ]);
         return view('selling.index', [
-            'orders' => Order::with('user')->whereDate('created_at', $request->date_filter ?? Carbon::now()->format('Y-m-d'))->filter(request(['search']))->paginate(10),
+            'orders' => Order::with(['user' => fn($q) => $q->withTrashed()])->whereDate('created_at', $request->date_filter ?? Carbon::now()->format('Y-m-d'))->filter(request(['search']))->paginate(10),
             'date_filter' => $request->date_filter ?? Carbon::now()->format('Y-m-d')
         ]);
     }
