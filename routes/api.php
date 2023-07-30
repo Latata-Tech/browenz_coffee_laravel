@@ -36,6 +36,8 @@ Route::middleware('auth:sanctum')->group(function () {
        Route::get('/not-process', [OrderController::class, 'getOrderNotProcess']);
        Route::post('/', [OrderController::class, 'createOrder']);
        Route::put('/{code}', [OrderController::class, 'setStatusDone']);
+       Route::put('/{code}/update', [OrderController::class, 'updateOrder']);
+       Route::get('/{code}/detail', [OrderController::class, 'detailOrderData']);
        Route::get('/', [OrderController::class, 'getOrders']);
        Route::get('/total-today', [OrderController::class, 'getTotalOrder']);
        Route::get('/total', [OrderController::class, 'getTotalOrder']);

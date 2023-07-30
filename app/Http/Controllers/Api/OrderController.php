@@ -116,6 +116,65 @@ class OrderController extends Controller
             'data' => $orders
         ]);
     }
+
+    public function updateOrder(Request $request, $code) {
+        $request->validate([
+            'order_detail' => 'required|array',
+            'order_detail.*.id' => 'required|exists:order_details,id',
+            'order_detail.*.qty' => 'required|integer|min:1',
+            'pay' => 'required|integer|min:1',
+        ]);
+        try {
+            DB::beginTransaction();
+            $total = 0;
+            $totalBeforeDiscount = 0;
+            $discount = 0;
+            $order = Order::where('code', $code)->first();
+            if(is_null($order)) {
+                throw new \Exception('Order tidak ditemukan', 404);
+            }
+            foreach ($request->order_detail as $orderMenu) {
+                $detail = OrderDetail::where('id', $orderMenu['id'])->where('order_id', $order->id)->first();
+                $detail->qty = $orderMenu['qty'];
+                $menu = Menu::find($detail->menu_id);
+                $price = $detail->variant === 'hot' ? $menu->hot_price : $menu->ice_price;
+                $promo = MenuPromo::where('id', $detail->menu_promo_id)->orderBy('created_at', 'desc')->first();
+                if(!is_null($promo)) {
+                    $price = $detail->variant === 'hot' ? $promo->hot_price : $promo->ice_price;
+                    $discount += $detail->variant === 'hot' ? ($menu->hot_price - $promo->hot_price) * $orderMenu['qty'] : ($menu->ice_price - $promo->ice_price) * $orderMenu['qty'];
+                    $totalBeforeDiscount += $detail->variant === 'hot' ? $menu->hot_price * $orderMenu['qty'] : $menu->ice_price * $orderMenu['qty'];
+                }
+                $detail->total = $price * $orderMenu['qty'];
+                $detail->price = $price;
+                $detail->save();
+                $total += $detail->total;
+            }
+            $order->update([
+                'total' => $total,
+                'total_pay' => $request->pay,
+                'discount' => $discount,
+                'total_before_discount' => $totalBeforeDiscount
+            ]);
+            DB::commit();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Berhasil membuat order'
+            ], 201);
+        } catch (\Throwable $e) {
+            Log::error($e);
+            DB::rollBack();
+            if($e->getCode() === 400) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e->getMessage()
+                ], $e->getCode());
+            }
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Terjadi kesalahan pada server'
+            ], 500);
+        }
+    }
     public function createOrder(OrderRequest $request) {
         try {
             DB::beginTransaction();
@@ -189,6 +248,35 @@ class OrderController extends Controller
                 'message' => 'Terjadi kesalahan pada server'
             ], 500);
         }
+    }
+
+    public function detailOrderData(string $code) {
+        $orderItems = [];
+        $datas = Order::with(['detail', 'detail.menu' => fn($q) => $q->withTrashed(), 'user' => fn($q) => $q->withTrashed()])->where('code', $code)->first()->toArray();
+        foreach ($datas['detail'] as $detail) {
+            $item = [
+                'id' => $detail['id'],
+                'total' => $detail['total'],
+                'qty' => $detail['qty'],
+                'name' => $detail['menu']['name'],
+                'variant' => $detail['variant'],
+                'price' => $detail['price'],
+            ];
+            $orderItems[] = $item;
+        }
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'code' => $datas['code'],
+                'payment_type' => $datas['payment_type'],
+                'detail' => $orderItems,
+                'total' => $datas['total'],
+                'cashier' => $datas['user']['name'],
+                'orderDate' => Carbon::createFromDate($datas['created_at'])->format('d-m-Y'),
+                'orderHour' => Carbon::createFromDate($datas['created_at'])->format('H:i'),
+                'discount' => $datas['discount']
+            ]
+        ]);
     }
 
     public function detailOrder(string $code) {
