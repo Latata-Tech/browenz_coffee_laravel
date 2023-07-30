@@ -12,7 +12,7 @@ class Order extends Model
     protected $guarded = ['id'];
 
     public function detail() {
-        return $this->hasMany(OrderDetail::class, 'order_id', 'id')->withTrashed();
+        return $this->hasMany(OrderDetail::class, 'order_id', 'id');
     }
 
     public function user() {
