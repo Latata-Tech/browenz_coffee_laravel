@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\GenerateCodeHelper;
 use App\Models\Ingredient;
+use App\Models\StockType;
 use App\Models\IngredientStockHistory;
 use App\Models\TransactionStock;
 use App\Models\TransactionStockIngredient;
@@ -24,7 +25,7 @@ class TransactionController extends Controller
             'filter' => 'nullable|string'
         ]);
         return view('transactions.index', [
-            'ingredient_transactions' => TransactionStock::with('detail')->filter(\request(['search', 'type', 'filter']))->orderBy('transaction_date')->paginate(10)
+            'ingredient_transactions' => TransactionStock::with('detail')->filter(\request(['search', 'type', 'filter']))->orderBy('transaction_date')->paginate(10),
         ]);
     }
 
@@ -32,13 +33,14 @@ class TransactionController extends Controller
     {
         return view('transactions.create', [
             'ingredients' => Ingredient::with('type')->get(),
+            'stock_type' => StockType::select(['id', 'name'])->get()
         ]);
     }
 
     public function detail(TransactionStock $transaction): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         return view('transactions.detail', [
-            'ingredients' => Ingredient::with('type')->withTrashed()->get(),
+            'ingredients' => Ingredient::with('type')->get(),
             'ingredient_transactions' => $transaction,
         ]);
     }
@@ -58,7 +60,8 @@ class TransactionController extends Controller
                 'ingredient_id' => 'required|array',
                 'ingredient_id.*' => ['required', 'exists:ingredients,id'],
                 'qties' => ['required', 'array'],
-                'qties.*' => 'required|integer|min:0',
+                'qties.*.amount' => 'required|integer|min:0',
+                'qties.*.type' => 'required|exists:stock_types,id',
                 'description' => 'required|string'
             ]
         );
@@ -74,16 +77,21 @@ class TransactionController extends Controller
             for ($i = 0; $i < count($request->ingredient_id); $i++) {
                 $transIngredient = TransactionStockIngredient::where('transaction_stock_id', $transaction->id)
                     ->where('ingredient_id', $request->ingredient_id[$i])->first();
+                $qty = $request->qties[$i]['amount'];
+                $typeIngredient = $request->qties[$i]['type'];
+                if($typeIngredient === 'kg' && $ingredient->type->name === 'gram') {
+                    $qty = $request->qties[$i]['amount'] * 1000;
+                }    
                 if (is_null($transIngredient)) {
                     $this->addTransactionIngredient([
                         'ingredient_id' => $request->ingredient_id[$i],
-                        'qty' => $request->qties[$i],
+                        'qty' => $qty,
                         'transaction_id' => $transaction->id,
                         'transaction_code' => $transaction->code
                     ], $request->type);
                 } else {
-                    $stock = $request->qties[$i] - $transIngredient->qty;
-                    $transIngredient->update(['qty', $request->qties[$i]]);
+                    $stock = $qty - $transIngredient->qty;
+                    $transIngredient->update(['qty', $qty]);
                     $history = [
                         'ingredient_id' => $transIngredient->ingredient->id,
                         'prev_stock' => $transIngredient->ingredient->stock,
@@ -170,9 +178,10 @@ class TransactionController extends Controller
             'date' => 'required|date|date_format:Y-m-d',
             'type' => 'required|in:in,out',
             'ingredient_id' => 'required|array',
-            'ingredient_id.*' => ['required', 'exists:ingredients,id'],
+            'ingredient_id.*.id' => ['required', 'exists:ingredients,id'],
             'qties' => ['required', 'array'],
-            'qties.*' => 'required|integer|min:0',
+            'qties.*.amount' => 'required|integer|min:0',
+            'qties.*.type' => 'required|exists:stock_types,id',
             'description' => 'required|string'
         ]);
         if(count($request->ingredient_id) != count(array_unique($request->ingredient_id))) {
@@ -193,9 +202,14 @@ class TransactionController extends Controller
                         throw new Exception('Quantity ' . $ingredient->name . ' yang keluar melebih dari yang tersedia', 400);
                     }
                 }
+                $qty = $request->qties[$i]['amount'];
+                $typeIngredient = $request->qties[$i]['type'];
+                if($typeIngredient === 'kg' && $ingredient->type->name === 'gram') {
+                    $qty = $request->qties[$i]['amount'] * 1000;
+                }
                 $transactionIngredient = [
                     'ingredient_id' => $ingredient->id,
-                    'qty' => $request->qties[$i],
+                    'qty' => $qty,
                     'stock_type_id' => $ingredient->type->id,
                     'transaction_stock_id' => $transaction->id
                 ];
@@ -207,10 +221,10 @@ class TransactionController extends Controller
                     'transaction_stock_ingredient_id' => $detail->id
                 ];
                 if ($request->type == 'out') {
-                    $ingredient->decrement('stock', $request->qties[$i]);
+                    $ingredient->decrement('stock', $qty);
                     $history['description'] = 'Keluar';
                 } else {
-                    $ingredient->increment('stock', $request->qties[$i]);
+                    $ingredient->increment('stock', $qty);
                     $history['description'] = 'Masuk';
                 }
                 $history['stock'] = $ingredient->stock;
