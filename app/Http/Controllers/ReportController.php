@@ -23,8 +23,8 @@ class ReportController extends Controller
 
     public function staffIncome() {
         $data = Order::with(['user' => fn($q) => $q->withTrashed()])
+        ->select([DB::raw("SUM(total) as total"))
         ->whereDate('created_at', '2023-07-31')
-        ->sum('total')
         ->groupBy('user_id')
         ->get();
         @dd($data);
