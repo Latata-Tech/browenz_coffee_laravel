@@ -101,6 +101,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::prefix('reports')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('reports');
+        Route::get('/income', [ReportController::class, 'staffIncome'])->name('staffIncome');
         Route::get('/selling-report', [ReportController::class, 'export'])->name('sellingExport');
         Route::get('/ingredient-report', [ReportController::class, 'ingredientExport'])->name('ingredientExport');
     });

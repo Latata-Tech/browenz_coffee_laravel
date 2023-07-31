@@ -10,6 +10,7 @@ use App\Models\Order;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Carbon;
 
 class ReportController extends Controller
 {
@@ -17,6 +18,18 @@ class ReportController extends Controller
         return view('report.index', [
             'month' => [ "Januari", "Februari", "Maret", "April", "Mei", "Juni",
                 "Juli", "Agustus", "September", "Oktober", "Nopember", "Desember" ]
+        ]);
+    }
+
+    public function staffIncome() {
+        $data = Order::with(['user' => fn($q) => $q->withTrashed()])
+        ->sum('total')
+        ->whereDate('created_at', Carbon::now())
+        ->groupBy('user_id')
+        ->get();
+        @dd($data);
+        return view('report.income', [
+            'data' => $data
         ]);
     }
     public function export(ExportSellingRequest $request) {
