@@ -28,10 +28,10 @@ class ReportController extends Controller
         ->whereDate('created_at', '2023-07-31')
         ->groupBy('user_id')
         ->get();
-        @dd($data);
         $dataResult = [];
         foreach ($data as $value) {
-            $user = User::find($value->user_id)->first();
+            $userData = User::find($value->user_id)->first();
+            @dd($userData)
             $dataResult[] = [
                 'name' => $user->name,
                 'total' => $value->total
