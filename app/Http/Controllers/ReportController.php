@@ -30,10 +30,9 @@ class ReportController extends Controller
         ->get();
         $dataResult = [];
         foreach ($data as $value) {
-            @dd($value->user_id);
-            @dd($userData);
+            $userData = User::find($value->user_id)->first();
             $dataResult[] = [
-                'name' => $user->name,
+                'name' => $userData->name,
                 'total' => $value->total
             ];
         }
