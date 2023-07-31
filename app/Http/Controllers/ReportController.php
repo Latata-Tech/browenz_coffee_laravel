@@ -7,6 +7,7 @@ use App\Exports\SellingExport;
 use App\Http\Requests\ExportIngredientRequest;
 use App\Http\Requests\ExportSellingRequest;
 use App\Models\Order;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
