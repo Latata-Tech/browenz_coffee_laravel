@@ -30,7 +30,7 @@ class ReportController extends Controller
         ->get();
         $dataResult = [];
         foreach ($data as $value) {
-            @dd($value);
+            @dd($value->user_id);
             @dd($userData);
             $dataResult[] = [
                 'name' => $user->name,
