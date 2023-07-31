@@ -28,7 +28,15 @@ class ReportController extends Controller
         ->whereDate('created_at', '2023-07-31')
         ->groupBy('user_id')
         ->get();
-        @dd($data);
+        $dataResult = [];
+        foreach ($data as $value) {
+            $user = User::find($value->user_id)->first();
+            $dataResult[] = [
+                'name' => $user->name,
+                'total' => $value->total
+            ];
+        }
+        @dd($dataResult);
         return view('report.income', [
             'data' => $data
         ]);
