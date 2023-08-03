@@ -33,7 +33,7 @@ class TransactionController extends Controller
     {
         return view('transactions.create', [
             'ingredients' => Ingredient::with('type')->get(),
-            'stock_type' => StockType::select(['id', 'name'])->get()
+            'units' => StockType::select(['id', 'name'])->get()
         ]);
     }
 
@@ -50,6 +50,7 @@ class TransactionController extends Controller
         return view('transactions.edit', [
             'ingredients' => Ingredient::with('type')->get(),
             'ingredient_transactions' => TransactionStock::with('detail')->find($id),
+            'units' => StockType::select(['id', 'name'])->get()
         ]);
     }
 
@@ -60,8 +61,7 @@ class TransactionController extends Controller
                 'ingredient_id' => 'required|array',
                 'ingredient_id.*' => ['required', 'exists:ingredients,id'],
                 'qties' => ['required', 'array'],
-                'qties.*.amount' => 'required|integer|min:0',
-                'qties.*.type' => 'required|exists:stock_types,id',
+                'qties.*' => 'required|integer|min:0',
                 'description' => 'required|string'
             ]
         );
@@ -77,11 +77,7 @@ class TransactionController extends Controller
             for ($i = 0; $i < count($request->ingredient_id); $i++) {
                 $transIngredient = TransactionStockIngredient::where('transaction_stock_id', $transaction->id)
                     ->where('ingredient_id', $request->ingredient_id[$i])->first();
-                $qty = $request->qties[$i]['amount'];
-                $typeIngredient = $request->qties[$i]['type'];
-                if($typeIngredient === 'kg' && $ingredient->type->name === 'gram') {
-                    $qty = $request->qties[$i]['amount'] * 1000;
-                }    
+                $qty = $request->qties[$i];
                 if (is_null($transIngredient)) {
                     $this->addTransactionIngredient([
                         'ingredient_id' => $request->ingredient_id[$i],
@@ -178,10 +174,8 @@ class TransactionController extends Controller
             'date' => 'required|date|date_format:Y-m-d',
             'type' => 'required|in:in,out',
             'ingredient_id' => 'required|array',
-            'ingredient_id.*.id' => ['required', 'exists:ingredients,id'],
-            'qties' => ['required', 'array'],
-            'qties.*.amount' => 'required|integer|min:0',
-            'qties.*.type' => 'required|exists:stock_types,id',
+            'ingredient_id.*' => ['required', 'exists:ingredients,id'],
+            'qties.*' => 'required|integer|min:0',
             'description' => 'required|string'
         ]);
         if(count($request->ingredient_id) != count(array_unique($request->ingredient_id))) {
@@ -202,11 +196,7 @@ class TransactionController extends Controller
                         throw new Exception('Quantity ' . $ingredient->name . ' yang keluar melebih dari yang tersedia', 400);
                     }
                 }
-                $qty = $request->qties[$i]['amount'];
-                $typeIngredient = $request->qties[$i]['type'];
-                if($typeIngredient === 'kg' && $ingredient->type->name === 'gram') {
-                    $qty = $request->qties[$i]['amount'] * 1000;
-                }
+                $qty = $request->qties[$i];
                 $transactionIngredient = [
                     'ingredient_id' => $ingredient->id,
                     'qty' => $qty,

@@ -40,7 +40,7 @@
                             <label class="mt-3 fw-bold">Jumlah</label>
                             <div class="input-group flex-nowrap align-items-center">
                                 <input type="number" class="form-control" name="qties[]" value="{{$value->qty}}">
-                                <span class="input-group-text" id="addon-wrapping">@</span>
+                                <span class="input-group-text" id="addon-wrapping">{{$value->ingredient->type->name}}</span>
                             </div>
                         </div>
                     </div>

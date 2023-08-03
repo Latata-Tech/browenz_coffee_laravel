@@ -13,7 +13,7 @@
     @include('components.error')
     @include('components.error-custom', ['errorName' => 'failed'])
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-8">
             <form action="{{route('storeTransaction')}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @include('components.input', ['type' => 'date', 'name' => 'date', 'label' => 'Tanggal'])
@@ -26,14 +26,30 @@
                 </div>
                <div class="form-group" id="first">
                    <div class="row">
-                       <div class="col-6">
+                       <div class="col-3">
                            @include('components.select', ['datas' => $ingredients, 'name' => 'ingredient_id[]', 'label' => 'Bahan baku', 'selected' => null, 'onchange' => 'onchange=getStockType(this)', 'placeholder' => 'Pilih Bahan Baku'])
                        </div>
                        <div class="col-6">
                            <label class="mt-3 fw-bold">Jumlah</label>
-                           <div class="input-group flex-nowrap align-items-center">
-                               <input type="number" class="form-control" name="qties[]">
-                               <span class="input-group-text" id="addon-wrapping">@</span>
+                           <div class="row">
+                               <div class="col-6 converter-container d-none">
+                                   <div class="input-group flex-nowrap align-items-center">
+                                       <input type="number" class="form-control converts" onkeyup="convertUnit(this)">
+                                       <select class="form-control input-group-lg" onchange="onChangeUnit(this)" name="convert">
+                                           @foreach($units as $data)
+                                               @if(in_array($data->name,['gram', 'kg']))
+                                                   <option value="{{$data->name}}">{{$data->name}}</option>
+                                               @endif
+                                           @endforeach
+                                       </select>
+                                   </div>
+                               </div>
+                               <div class="col-6">
+                                   <div class="input-group flex-nowrap align-items-center">
+                                       <input type="number" class="form-control" name="qties[]">
+                                       <span class="input-group-text" id="addon-wrapping">@</span>
+                                   </div>
+                               </div>
                            </div>
                        </div>
                    </div>

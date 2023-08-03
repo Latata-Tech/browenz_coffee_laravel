@@ -1,4 +1,4 @@
-const baseURL = "https://api.browenzpos.me";
+const baseURL = "https://eec1-2404-8000-1046-90-7863-a76e-ec8d-a0b.ngrok-free.app";
 
 
 window.deleteModal = function (elm, id) {
@@ -59,7 +59,7 @@ function removeIngredient(elm) {
 }
 
 function removeIngredientHtml() {
-    this.parentNode.parentNode.parentNode.parentNode.removeChild((this.parentNode.parentNode.parentNode));
+    this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.removeChild((this.parentNode.parentNode.parentNode.parentNode.parentNode));
 }
 
 function getStockType(elm) {
@@ -67,9 +67,40 @@ function getStockType(elm) {
         url: baseURL + '/ingredients/detail-json/' + elm.value,
         method: 'get'
     }).then((value) => {
-        elm.parentNode.parentNode.parentNode.children[1].children[1].children[1].innerText = value.type.name
+        const currentConvercy = ['kg'];
+        if(currentConvercy.includes(value.type.name)) {
+            elm.parentNode.parentNode.parentNode.children[1].children[1].children[0].classList.remove('d-none');
+        } else {
+            elm.parentNode.parentNode.parentNode.children[1].children[1].children[0].classList.add('d-none');
+        }
+        elm.parentNode.parentNode.parentNode.children[1].children[1].children[1].children[0].children[1].innerText = value.type.name;
+
     })
 }
+
+let unitStock = "gram";
+function onChangeUnit(elm) {
+    unitStock = elm.value;
+}
+function convertUnit(elm) {
+    let inputStock = elm.parentNode.parentNode.parentNode.children[1].children[0].children[0];
+    let typeStock = elm.parentNode.parentNode.parentNode.children[1].children[0].children[1];
+    console.log(unitStock, typeStock.textContent)
+    if(unitStock === typeStock.textContent) {
+        inputStock.value = elm.value;
+    } else {
+        switch (unitStock) {
+            case 'kg':
+                inputStock.value = elm.value * 1000;
+                break;
+            case 'gram':
+                inputStock.value = elm.value / 1000;
+                break;
+        }
+    }
+}
+
+
 
 function addIngredient() {
     const node = document.getElementById('first').cloneNode(true);
@@ -79,8 +110,10 @@ function addIngredient() {
     elm.innerText = "close";
     elm.addEventListener('click', removeIngredientHtml)
     node.classList.remove("d-none");
-    node.children[0].children[1].children[1].append(elm);
-    node.children[0].children[1].children[1].children[0].value = '';
+    node.children[0].children[1].children[1].children[0].classList.add('d-none');
+    node.children[0].children[1].children[1].children[0].children[0].children[0].value = '';
+    node.children[0].children[1].children[1].children[1].children[0].append(elm);
+    node.children[0].children[1].children[1].children[1].children[0].children[0].value = '';
     document.getElementById('ingredients_container').appendChild(node);
 }
 
