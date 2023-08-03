@@ -67,7 +67,7 @@ function getStockType(elm) {
         url: baseURL + '/ingredients/detail-json/' + elm.value,
         method: 'get'
     }).then((value) => {
-        const currentConvercy = ['kg'];
+        const currentConvercy = ['kg', 'gram'];
         if(currentConvercy.includes(value.type.name)) {
             elm.parentNode.parentNode.parentNode.children[1].children[1].children[0].classList.remove('d-none');
         } else {
