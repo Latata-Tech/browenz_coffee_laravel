@@ -1,4 +1,4 @@
-const baseURL = "https://eec1-2404-8000-1046-90-7863-a76e-ec8d-a0b.ngrok-free.app";
+const baseURL = "https://api.browenzpos.me";
 
 
 window.deleteModal = function (elm, id) {
