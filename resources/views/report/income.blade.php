@@ -12,8 +12,10 @@
     </div>
     <table class="table">
         @foreach($data as $value)
-            <th>{{$value['name']}}</th>
-            <th>{{$value['total']}}
+            <tr>
+                <th>{{$value['name']}}</th>
+                <td>{{$value['total']}}</td>
+            </tr>
         @endforeach
     </table>
 @endsection
