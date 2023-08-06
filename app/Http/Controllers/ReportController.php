@@ -37,9 +37,8 @@ class ReportController extends Controller
                 'total' => $value->total
             ];
         }
-        @dd($dataResult);
         return view('report.income', [
-            'data' => $data
+            'data' => $dataResult
         ]);
     }
     public function export(ExportSellingRequest $request) {

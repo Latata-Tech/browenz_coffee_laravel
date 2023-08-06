@@ -11,9 +11,9 @@
         <h4>Laporan</h4>
     </div>
     <table class="table">
-        @foreach($data as $data)
-            <th>{{$data->user->name}}</th>
-            <th>{{$data}}
+        @foreach($data as $value)
+            <th>{{$value['name']}}</th>
+            <th>{{$value['total']}}
         @endforeach
     </table>
 @endsection
